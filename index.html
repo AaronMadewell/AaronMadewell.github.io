@@ -3,480 +3,714 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>HIRE-001 | Business Analysis & QA Portfolio</title>
-<meta name="description" content="An open hiring ticket and the evidence to close it: operations leadership, QA testing, and SQL analysis.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<title>Aaron Madewell | Business Analysis and QA Portfolio</title>
+<meta name="description" content="Aaron Madewell is a store manager moving into business analysis. Scroll through the story from the store floor to SQL, with live queries on a sample database.">
+<link rel="preload" href="geist.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Design read: cinematic scroll story for recruiters scanning for junior BA / ops / support roles.
+   Native CSS + GSAP ScrollTrigger (scrolltelling). Dials: variance 8, motion 7, density 3.
+   Shape rule: 12px for buttons and containers, 8px for small chips. One accent: signal orange.
+   Every motion has a job: time passing (timeline pan), questions becoming queries (pinned scene),
+   depth (stacking cards), feedback (buttons). Static fallback for phones and reduced motion. */
+@font-face{font-family:"Geist";src:url(geist.woff2) format("woff2");font-weight:400 700;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url(geist-mono.woff2) format("woff2");font-weight:400 600;font-display:swap}
+
 :root{
-  --ink:#0d1117; --panel:#151b23; --panel2:#1b232d; --line:#2a3441; --text:#e8edf3; --muted:#93a1b3;
-  --amber:#ffb524; --amber-d:#3a2a08; --pass:#3ddc97; --pass-d:#0f2f24; --fail:#ff6b6b; --fail-d:#3a1717; --blue:#6cb6ff;
-  --paper:#f5efe3; --paper-ink:#1a1712;
+  color-scheme:light dark;
+  --r:12px; --r-sm:8px;
+  --bg:#f2f3f4; --surface:#fafafb; --surface-2:#e9ebed; --text:#13161a; --muted:#566070; --line:#d6dae0;
+  --accent:#b9440b; --accent-ink:#fff6ef; --glow:rgba(185,68,11,.16);
+  --shadow:0 1px 2px rgba(20,23,27,.06),0 24px 60px rgba(70,44,30,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0e11; --surface:#14171b; --surface-2:#1a1e23; --text:#eceef1; --muted:#98a2ae; --line:#262b32;
+    --accent:#ff8a4c; --accent-ink:#1c0d04; --glow:rgba(255,138,76,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 28px 70px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0e11; --surface:#14171b; --surface-2:#1a1e23; --text:#eceef1; --muted:#98a2ae; --line:#262b32;
+  --accent:#ff8a4c; --accent-ink:#1c0d04; --glow:rgba(255,138,76,.16);
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 28px 70px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--text);font:400 16px/1.65 "IBM Plex Mono",ui-monospace,monospace;-webkit-font-smoothing:antialiased;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;background-position:-1px -1px;background-attachment:fixed}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(1200px 600px at 80% -10%,rgba(255,181,36,.10),transparent 60%),var(--ink);opacity:.93;z-index:-1}
-a{color:var(--amber)}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-h1,h2,h3{font-family:"Space Grotesk",system-ui,sans-serif;line-height:1.1;letter-spacing:-.02em}
-.serif{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;color:var(--amber)}
-section{padding:78px 0}
-.sec-label{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.sec-label b{color:var(--amber);font-weight:600}
-.sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
-h2{font-size:clamp(28px,4.4vw,46px);margin-bottom:12px}
-.lede{color:var(--muted);max-width:64ch;font-size:15.5px}
+body{background:var(--bg);color:var(--text);font:400 17px/1.6 "Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-weight:600;letter-spacing:-.03em;line-height:1.04}
+p{color:var(--muted)}
+.mono{font-family:"Geist Mono",ui-monospace,monospace}
+.big{font-size:clamp(40px,6.4vw,96px)}
+section{position:relative}
 
-/* top status bar */
-.bar{position:sticky;top:0;z-index:30;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font-size:12px}
-.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:44px}
-.bar .l{display:flex;align-items:center;gap:10px;color:var(--muted);white-space:nowrap;overflow:hidden}
-.led{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 0 rgba(255,181,36,.6);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,181,36,0)}100%{box-shadow:0 0 0 0 rgba(255,181,36,0)}}
-.bar nav{display:flex;gap:16px}
-.bar nav a{color:var(--muted);text-decoration:none}
-.bar nav a:hover{color:var(--amber)}
-@media(max-width:700px){.bar nav a:not(.keep){display:none}}
+/* progress + nav */
+.progress{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;z-index:60}
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;pointer-events:none}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav a,.nav button{pointer-events:auto}
+.brand{font-weight:600;letter-spacing:-.02em;text-decoration:none;padding:8px 14px;border-radius:var(--r);background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px)}
+.navr{display:flex;gap:10px;align-items:center}
+.pill{padding:8px 14px;border-radius:var(--r);background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px);font-size:15px;text-decoration:none;border:1px solid var(--line);color:var(--text)}
+.pill:hover{border-color:var(--accent)}
+.tbtn{font:500 13px "Geist Mono",monospace;cursor:pointer;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px);color:var(--text);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px}
+.tbtn:hover{border-color:var(--accent)}
 
-/* hero ticket */
-.hero{padding:56px 0 30px}
-.ticket{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-.t-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel2);font-size:13px}
-.key{font-weight:600;color:var(--blue)}
-.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.pill.open{background:var(--amber-d);color:var(--amber);border:1px solid #6b4d10}
-.pill.high{background:var(--fail-d);color:var(--fail);border:1px solid #6b2a2a}
-.pill.pass{background:var(--pass-d);color:var(--pass);border:1px solid #1d5a43}
-.pill.warn{background:var(--amber-d);color:var(--amber);border:1px solid #6b4d10}
-.pill.todo{background:#222b36;color:var(--muted);border:1px solid var(--line)}
-.t-body{display:grid;grid-template-columns:1.6fr 1fr}
-@media(max-width:860px){.t-body{grid-template-columns:1fr}}
-.t-main{padding:28px 24px 30px}
-.t-main h1{font-size:clamp(30px,5.4vw,58px);margin-bottom:22px}
-.t-main p.d{color:var(--muted);max-width:60ch;margin-bottom:22px}
-.steps{list-style:none;counter-reset:s;margin:0 0 24px}
-.steps li{counter-increment:s;display:flex;gap:12px;margin:6px 0;font-size:15px}
-.steps li::before{content:counter(s);flex:none;width:22px;height:22px;border-radius:6px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--amber)}
-.xa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:26px}
-@media(max-width:560px){.xa{grid-template-columns:1fr}}
-.xa div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
-.xa .exp{border-color:#1d5a43;background:var(--pass-d)}
-.xa .act{border-color:#6b4d10;background:var(--amber-d)}
-.xa small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;border:1px solid var(--amber);background:var(--amber);color:#1a1200;font:600 14px "IBM Plex Mono",monospace;cursor:pointer;text-decoration:none;transition:transform .15s}
-.btn:hover{transform:translateY(-2px)}
-.btn.ghost{background:transparent;color:var(--amber)}
-.t-side{padding:24px;border-left:1px solid var(--line);background:rgba(255,255,255,.015);font-size:13.5px}
-@media(max-width:860px){.t-side{border-left:0;border-top:1px solid var(--line)}}
-.field{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
-.field span:first-child{color:var(--muted)}
-.redact{background:var(--text);color:var(--text);border-radius:3px;padding:0 6px;cursor:help;transition:all .25s;user-select:none}
-.redact:hover,.redact:focus{background:transparent;color:var(--amber)}
-.counter{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.counter div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
-.counter b{display:block;font:700 26px "Space Grotesk";color:var(--amber)}
-.counter span{font-size:11.5px;color:var(--muted)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:15px 24px;border-radius:var(--r);border:1px solid var(--text);background:transparent;color:var(--text);font:600 15px "Geist",sans-serif;text-decoration:none;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),background .2s}
+.btn:hover{transform:translateY(-3px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.sm{padding:10px 15px;font-size:14px}
 
-/* test plan */
-.runner{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:22px 0 20px}
-.progress{flex:1;min-width:200px;height:10px;background:var(--panel2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
-.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pass),#9af2c8);transition:width .6s ease}
-#tally{font-size:13px;color:var(--muted)}
-.tc{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
-.tc summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 18px;flex-wrap:wrap}
-.tc summary::-webkit-details-marker{display:none}
-.tc .id{color:var(--blue);font-weight:600;font-size:13px}
-.tc .ti{font:700 18px "Space Grotesk";flex:1;min-width:200px}
-.tc .res{margin-left:auto}
-.tc[open] summary{border-bottom:1px solid var(--line);background:var(--panel2)}
-.tc .ev{padding:16px 20px 20px;color:var(--muted);font-size:15px}
-.tc .ev ul{margin:8px 0 0 18px}
-.tc .ev li{margin:4px 0}
-.chev{transition:transform .2s;color:var(--muted)}
-.tc[open] .chev{transform:rotate(90deg)}
-.status-wait .pill{opacity:.35}
+/* hero */
+.hero{min-height:100dvh;display:grid;align-items:center;padding:96px 0 56px;overflow:hidden}
+.mesh{position:absolute;inset:-20%;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(40% 40% at 78% 28%,var(--glow),transparent 70%),
+   radial-gradient(34% 34% at 18% 78%,var(--glow),transparent 72%),
+   radial-gradient(30% 30% at 55% 60%,color-mix(in srgb,var(--text) 5%,transparent),transparent 70%);
+  animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-3%,2%,0) scale(1.08)}}
+.hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1.18fr .82fr;gap:44px;align-items:center}
+.hero h1{font-size:clamp(34px,3.7vw,58px);margin-bottom:24px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{font-size:19px;max-width:34ch;margin-bottom:32px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+@media(max-width:900px){.hero .grid{grid-template-columns:1fr;gap:40px}.hero{padding-top:92px}}
+.live{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out}
+.live .top{padding:18px 20px 12px}
+.live .top h3{font-size:18px;margin-bottom:4px;letter-spacing:-.015em}
+.live .top p{font-size:14px}
+.live .tw{padding:0 8px 8px;overflow-x:auto}
+.live table{width:100%;border-collapse:collapse;font-size:14px}
+.live th{font:500 12px "Geist Mono",monospace;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.live td{padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.live tr:last-child td{border-bottom:0}
+.n{font-family:"Geist Mono",monospace;text-align:right}
+th.n{text-align:right}
+.low{color:var(--accent);font-weight:600}
+.live .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);background:var(--surface-2)}
+.live .foot a{color:var(--text);font-weight:600}
+.row-in{opacity:0;transform:translateY(8px);animation:rowin .55s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes rowin{to{opacity:1;transform:none}}
+.stagger{opacity:0;transform:translateY(18px);animation:rowin .9s cubic-bezier(.16,1,.3,1) forwards}
+.stagger:nth-child(2){animation-delay:.08s}.stagger:nth-child(3){animation-delay:.16s}.stagger:nth-child(4){animation-delay:.24s}
 
-/* shift report */
-.shift{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
-@media(max-width:860px){.shift{grid-template-columns:1fr}}
-.kpi{background:var(--paper);color:var(--paper-ink);border-radius:12px;padding:20px 20px 22px;position:relative}
-.kpi::after{content:"";position:absolute;left:14px;right:14px;bottom:-6px;height:8px;background:var(--paper);opacity:.55;border-radius:0 0 12px 12px;z-index:-1}
-.kpi small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.65}
-.kpi h3{font-size:22px;margin:6px 0 4px}
-.kpi time{font-size:12.5px;opacity:.7}
-.kpi ul{margin:10px 0 0 17px;font-size:14px}
-.kpi li{margin:4px 0}
-.edu{margin-top:14px;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;color:var(--muted);font-size:14.5px}
-.edu b{color:var(--text)}
+/* journey: horizontal on desktop, vertical list otherwise */
+.journey{padding:96px 0}
+.track{display:grid;gap:28px}
+.jp{padding:0 28px;max-width:900px;margin:0 auto;width:100%}
+.jp .yr{font-weight:600;letter-spacing:-.05em;line-height:.9;font-size:clamp(72px,16vw,190px);color:transparent;-webkit-text-stroke:1.5px var(--text);margin-bottom:18px}
+.jp.now .yr{-webkit-text-stroke-color:var(--accent)}
+.jp h3{font-size:clamp(26px,3.4vw,44px);margin-bottom:10px}
+.jp p{font-size:18px;max-width:34ch}
+.jp.intro h2{font-size:clamp(40px,6vw,88px);max-width:12ch}
+.jp.end{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.motion .journey{padding:0;height:100dvh;overflow:hidden}
+.motion .track{display:flex;gap:0;height:100dvh;width:max-content;align-items:center}
+.motion .jp{flex:none;width:min(78vw,860px);max-width:none;margin:0;padding:0 5vw}
 
-/* coverage matrix */
-.cov{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:26px}
-.cov .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
-.cov h3{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.cov ul{list-style:none}
-.cov li{padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px;display:flex;justify-content:space-between;gap:10px}
-.cov li:last-child{border:0}
-.cov li span{color:var(--muted);font-size:12.5px;text-align:right}
+/* pinned story: questions become queries */
+.story{padding:96px 0}
+.stage{display:grid;gap:80px}
+.step{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center}
+.step h3{font-size:clamp(32px,4.4vw,64px);margin-bottom:14px}
+.step .cap p{font-size:18px;max-width:30ch}
+@media(max-width:900px){.step{grid-template-columns:1fr;gap:22px}}
+.win{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;max-height:76dvh;display:flex;flex-direction:column}
+.win .bar{display:flex;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);font:500 12px "Geist Mono",monospace;color:var(--muted)}
+.win pre{font:400 13px/1.65 "Geist Mono",monospace;color:var(--text);padding:14px 16px;overflow-x:auto;white-space:pre;border-bottom:1px solid var(--line)}
+.win .res{padding:4px 12px 12px;overflow:auto}
+.win table{width:100%;border-collapse:collapse;font-size:13.5px}
+.win th{font:500 11.5px "Geist Mono",monospace;color:var(--muted);text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.win td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line);white-space:nowrap;font-family:"Geist Mono",monospace;font-size:13px}
+.kw{color:var(--accent)}
+.motion .story{padding:0;height:100dvh;overflow:hidden}
+.motion .stage{position:relative;height:100dvh;display:block}
+.motion .step{position:absolute;inset:0;padding:0 28px;max-width:1200px;margin:0 auto;opacity:0;pointer-events:none;transition:opacity .5s ease}
+.motion .step.on{opacity:1;pointer-events:auto}
+.motion .step .cap{transform:translateY(24px);transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.motion .step.on .cap{transform:none}
+.dots{position:absolute;right:28px;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:10px;z-index:3}
+.motion .dots{display:flex}
+.dots i{width:3px;height:26px;border-radius:2px;background:var(--line);transition:background .3s,height .3s}
+.dots i.on{background:var(--accent);height:44px}
 
-/* case study */
-.notice{border:1px dashed #6b4d10;background:var(--amber-d);color:var(--text);border-radius:10px;padding:12px 16px;font-size:14px;margin:18px 0 6px}
-.cs-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 16px}
-.cs-tab{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:500 13px "IBM Plex Mono",monospace;cursor:pointer}
-.cs-tab[aria-selected="true"]{background:var(--amber);border-color:var(--amber);color:#1a1200}
-.panel[hidden]{display:none}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:14px}
-.card h3{font-size:19px;margin-bottom:8px}
-.card p,.card li{color:var(--muted);font-size:14.5px}
-.card ul{margin:8px 0 0 18px}
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
-th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.tw{overflow-x:auto}
-.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
-.step{border:1px solid var(--line);border-radius:8px;padding:7px 11px;font-size:13px;background:var(--panel2)}
-.step.old{border-color:#6b2a2a;background:var(--fail-d)}
-.step.new{border-color:#1d5a43;background:var(--pass-d)}
-.arrow{color:var(--muted)}
-.row{display:grid;grid-template-columns:140px 1fr 64px;gap:12px;align-items:center;margin:8px 0;font-size:13px}
-.row .track{height:20px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;overflow:hidden;position:relative}
-.row .fill{height:100%;width:0;background:var(--pass);transition:width 1s cubic-bezier(.2,.8,.2,1)}
-.row .fill.warm{background:var(--amber)}
-.row .mark{position:absolute;top:0;bottom:0;width:2px;background:var(--fail)}
-.row b{text-align:right}
-@media(max-width:560px){.row{grid-template-columns:96px 1fr 52px;font-size:12px}}
-.find{display:flex;gap:10px;margin-top:12px;color:var(--text);font-size:14px}
-.find i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-top:9px}
+/* numbers */
+.numbers{padding:120px 0}
+.numbers h2{font-size:clamp(34px,5vw,72px);max-width:16ch;margin-bottom:56px}
+.nums{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border-top:1px solid var(--line)}
+.num{padding:34px 24px 34px 0;border-bottom:1px solid var(--line)}
+.num:nth-child(odd){border-right:1px solid var(--line)}
+.num:nth-child(even){padding-left:34px}
+.num b{display:block;font-size:clamp(52px,8vw,128px);letter-spacing:-.05em;line-height:.95;font-weight:600}
+.num b small{font-size:.4em;letter-spacing:-.02em;color:var(--accent);margin-left:6px}
+.num>span{display:block;margin-top:12px;font-size:17px;color:var(--muted);max-width:28ch}
+.note{margin-top:30px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r-sm);padding:14px 18px;font-size:15px;color:var(--text);max-width:720px}
+@media(max-width:800px){.nums{grid-template-columns:1fr}.num:nth-child(odd){border-right:0}.num:nth-child(even){padding-left:0}}
+details.more{margin-top:34px;max-width:900px;border-top:1px solid var(--line)}
+details.more summary{cursor:pointer;list-style:none;padding:22px 0;font-weight:600;font-size:20px;letter-spacing:-.015em;display:flex;justify-content:space-between}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"+";font:500 22px "Geist Mono",monospace;color:var(--accent);transition:transform .25s}
+details.more[open] summary::after{transform:rotate(45deg)}
+.more .in{padding-bottom:30px;display:grid;gap:28px}
+.more h4{font-size:16px;margin-bottom:8px}
+.more ul{margin-left:18px;color:var(--muted)}
+.more li{margin:5px 0}
+table.plain{width:100%;border-collapse:collapse;font-size:15px}
+.plain th{font:500 12px "Geist Mono",monospace;color:var(--muted);text-align:left;padding:10px 14px 10px 0;border-bottom:1px solid var(--line)}
+.plain td{padding:12px 14px 12px 0;vertical-align:top;border-bottom:1px solid var(--line);color:var(--muted)}
+.plain td:first-child{color:var(--text)}
+.tscroll{overflow-x:auto}
 
-/* sql lab */
-.lab{background:#0a0e13;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.lab-top{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-bottom:1px solid var(--line);background:var(--panel2)}
-.qbtn{padding:7px 12px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:500 12.5px "IBM Plex Mono",monospace;cursor:pointer}
-.qbtn:hover{border-color:var(--amber);color:var(--amber)}
-textarea#sql{width:100%;min-height:150px;background:#0a0e13;color:#d6f5ea;border:0;padding:16px;font:400 14px/1.6 "IBM Plex Mono",monospace;resize:vertical;outline:none}
-.lab-run{display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid var(--line);background:var(--panel2);flex-wrap:wrap}
-#status{font-size:12.5px;color:var(--muted)}
-#out{padding:6px 12px 14px;overflow-x:auto;min-height:60px}
-#out table{margin:6px 0 0}
-#out td,#out th{white-space:nowrap}
-.err{color:var(--fail);padding:12px 4px;font-size:13.5px}
-.dl{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+/* lab */
+.labsec{padding:100px 0}
+.labsec h2{font-size:clamp(34px,5vw,72px);max-width:14ch;margin-bottom:14px}
+.lab{margin-top:30px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;padding:14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.pbtn{padding:8px 12px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);color:var(--text);font:500 13px "Geist Mono",monospace;cursor:pointer}
+.pbtn:hover,.pbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+textarea{display:block;width:100%;min-height:170px;background:var(--surface);color:var(--text);border:0;padding:18px;font:400 14px/1.65 "Geist Mono",monospace;resize:vertical}
+textarea:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.runbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--line);background:var(--surface-2)}
+#status{font-size:13px;color:var(--muted)}
+#out{padding:8px 14px 16px;overflow-x:auto;min-height:72px}
+#out table{width:100%;border-collapse:collapse;font-size:14px}
+#out th{font:500 12px "Geist Mono",monospace;color:var(--muted);text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+#out td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap;font-family:"Geist Mono",monospace;font-size:13px}
+.err{padding:14px 0;color:var(--accent);font-size:14px}
+.downloads{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 
-/* gaps + footer */
-.gap-note{margin-top:22px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;color:var(--muted);font-size:14.5px;background:var(--panel)}
-footer{padding:70px 0 90px;border-top:1px solid var(--line)}
-footer h2{max-width:20ch}
-.small{font-size:12.5px;color:var(--muted);margin-top:26px}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:6px}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* coursework: sticky stack */
+.course{padding:110px 0 60px}
+.course h2{font-size:clamp(34px,5vw,72px);max-width:12ch;margin-bottom:12px}
+.stack{margin-top:48px;position:relative}
+.card{position:sticky;top:96px;min-height:min(62dvh,560px);margin-bottom:34px;border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,4vw,48px);box-shadow:var(--shadow);transform-origin:50% 0;overflow:hidden}
+.card:nth-child(1){top:96px;background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),var(--surface) 60%)}
+.card:nth-child(2){top:120px;background:var(--surface-2)}
+.card:nth-child(3){top:144px;background:radial-gradient(var(--line) 1px,transparent 1.3px) 0 0/18px 18px,var(--surface)}
+.card h3{font-size:clamp(30px,4vw,56px);margin-bottom:14px}
+.card p{font-size:18px;max-width:46ch;margin-bottom:18px}
+.card ul{margin-left:20px;color:var(--muted);max-width:56ch}
+.card li{margin:7px 0}
+.after{margin-top:24px;font-size:15px;max-width:66ch}
+
+/* ledger + contact */
+.ledger{padding:80px 0 20px}
+.ledger h2{font-size:clamp(34px,5vw,72px);max-width:16ch;margin-bottom:36px}
+.lrow{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line);max-width:960px}
+.lrow:last-child{border-bottom:1px solid var(--line)}
+.lrow h3{font-size:18px;padding-top:4px}
+.lrow p{color:var(--text);font-size:clamp(18px,2.2vw,26px);letter-spacing:-.015em;line-height:1.35}
+.lrow p span{color:var(--muted)}
+@media(max-width:700px){.lrow{grid-template-columns:1fr;gap:8px}}
+footer{padding:140px 0 100px;border-top:1px solid var(--line);margin-top:80px;overflow:hidden}
+footer h2{font-size:clamp(40px,7.4vw,112px);max-width:14ch;margin-bottom:34px}
+footer p{max-width:50ch;margin-bottom:28px;font-size:18px}
+.fine{margin-top:60px;font-size:14px;color:var(--muted)}
+
+
+/* code portrait */
+.introgrid{display:flex;align-items:center;gap:clamp(24px,4vw,64px)}
+.introgrid h2{font-size:clamp(40px,6vw,88px);max-width:9ch}
+.portrait{font-family:"Geist Mono",ui-monospace,monospace;font-weight:500;font-size:clamp(5.4px,.5vw,9.2px);line-height:1.2;color:var(--accent);white-space:pre;user-select:none;margin:0;flex:none;overflow:hidden}
+.portrait i{font-style:normal}
+.p1{opacity:.16}.p2{opacity:.32}.p3{opacity:.52}.p4{opacity:.76}.p5{opacity:1}
+.motion .jp.intro{width:min(94vw,1240px)}
+@media(max-width:899px){.introgrid{flex-direction:column;align-items:flex-start}.portrait{font-size:clamp(4.2px,1.2vw,6px)}}
+/* case file */
+details.more .in{display:block}
+.ctabs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 20px}
+.ctab{padding:9px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:transparent;color:var(--muted);font:500 14px "Geist",sans-serif;cursor:pointer}
+.ctab:hover{color:var(--text)}
+.ctab[aria-selected="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.cpanel[hidden]{display:none}
+.cpanel h4{font-size:17px;margin:0 0 8px}
+.cpanel p.small{font-size:14.5px;margin-bottom:12px}
+.mm{margin:8px 0 22px;overflow-x:auto}
+.mm svg{max-width:100%;height:auto}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font:500 12px "Geist Mono",monospace}
+.tag.pass{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.tag.fail{border:1px solid var(--accent);color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.kpi{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.kpi b{display:block;font-size:30px;letter-spacing:-.03em;color:var(--text)}
+.kpi span{font-size:13px;color:var(--muted)}
+.dbars{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media(max-width:800px){.dbars{grid-template-columns:1fr}}
+.bar{display:grid;grid-template-columns:120px 1fr 54px;gap:10px;align-items:center;margin:9px 0;font-size:14px}
+.bar .b{height:12px;position:relative}
+.bar .f{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);border-radius:4px;transition:width .9s cubic-bezier(.16,1,.3,1)}
+.bar .m{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--text)}
+.bar b{font:500 13px "Geist Mono",monospace;text-align:right}
+.dl2{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal,.stagger,.row-in{opacity:1!important;transform:none!important}
+  .progress{display:none}
+}
 </style>
 </head>
 <body>
+<div class="progress" aria-hidden="true"></div>
 
-<div class="bar" role="banner">
+<header class="nav">
   <div class="wrap">
-    <div class="l"><span class="led" aria-hidden="true"></span><span>BUILD 2026.10 &middot; STATUS: READY TO HIRE</span></div>
-    <nav aria-label="Sections">
-      <a href="#plan">Test plan</a><a href="#shift">Shift report</a><a href="#coverage">Coverage</a><a class="keep" href="#lab">SQL lab</a><a class="keep" href="#contact">Contact</a>
-    </nav>
+    <a class="brand" href="#top">Aaron Madewell</a>
+    <div class="navr">
+      <a class="pill" href="https://www.linkedin.com/in/aaronmadewell/" rel="noopener">LinkedIn</a>
+      <button class="tbtn" id="theme" type="button" aria-label="Switch between light and dark theme">Theme</button>
+    </div>
   </div>
-</div>
+</header>
 
-<main>
-<section class="hero" id="top">
-  <div class="wrap">
-    <article class="ticket" aria-label="Open hiring ticket HIRE-001">
-      <div class="t-head">
-        <span class="key">HIRE-001</span>
-        <span class="pill open">Open</span>
-        <span class="pill high">Priority: High</span>
-        <span style="color:var(--muted)">Type: Opportunity</span>
+<main id="top">
+
+<section class="hero">
+  <div class="mesh" aria-hidden="true"></div>
+  <div class="wrap grid" id="herogrid">
+    <div>
+      <h1 class="stagger">I catch problems <em>before</em> customers do.</h1>
+      <p class="sub stagger">Store manager moving into business analysis. Four years of operations, SQL and QA testing, with live proof below.</p>
+      <div class="ctas stagger">
+        <a class="btn primary" href="#journey">See how I work</a>
+        <a class="btn" href="https://www.linkedin.com/in/aaronmadewell/" rel="noopener">LinkedIn</a>
       </div>
-      <div class="t-body">
-        <div class="t-main">
-          <h1>Add an analyst who finds the problem <span class="serif">before</span> the customer does.</h1>
-          <p class="d">Four years running daily operations taught me to read the numbers, document the process, and fix what breaks. QA training taught me to test it, query it, and prove it. This page is the evidence.</p>
-          <ol class="steps">
-            <li>Open a business analyst, operations analyst or support role.</li>
-            <li>Run the test plan below and try the live SQL lab.</li>
-            <li>Close the ticket with an interview.</li>
-          </ol>
-          <div class="xa">
-            <div class="exp"><small>Expected</small>Candidate hired as a junior business analyst</div>
-            <div class="act"><small>Actual</small>Candidate still looking. Reproduces 100% of the time.</div>
-          </div>
-          <a class="btn" href="#plan" id="resolve">Resolve this ticket &darr;</a>
-          <a class="btn ghost" href="#lab" style="margin-left:8px">Run live SQL</a>
-        </div>
-        <aside class="t-side" aria-label="Ticket details">
-          <div class="field"><span>Assignee</span><span><span class="redact" tabindex="0" title="Name is on the r&eacute;sum&eacute; you received">REDACTED</span></span></div>
-          <div class="field"><span>Reporter</span><span>Hiring team</span></div>
-          <div class="field"><span>Location</span><span>Remote / Chicago area</span></div>
-          <div class="field"><span>Lane</span><span>BA &middot; Ops &middot; Support &middot; QA</span></div>
-          <div class="field"><span>Labels</span><span>sql, jira, selenium</span></div>
-          <div class="counter">
-            <div><b>4+</b><span>years leading ops</span></div>
-            <div><b>12</b><span>people led</span></div>
-            <div><b>5</b><span>SQL analyses</span></div>
-            <div><b>2027</b><span>A.A.S. expected</span></div>
-          </div>
-        </aside>
-      </div>
+    </div>
+    <aside class="live stagger" id="livecard" aria-label="Live SQL result">
+      <div class="top"><h3>What should a supplier reorder today?</h3><p>A real SQL query, running now on a sample inventory database.</p></div>
+      <div class="tw"><table>
+        <thead><tr><th>Product</th><th class="n">On hand</th><th class="n">Reorder at</th><th class="n">Lead days</th></tr></thead>
+        <tbody id="hero-rows"><tr><td colspan="4" style="color:var(--muted)">Loading the database</td></tr></tbody>
+      </table></div>
+      <div class="foot"><span id="hero-note">Sample data, made up for practice</span><a href="#lab">Open the SQL lab</a></div>
+    </aside>
+  </div>
+</section>
+
+<section class="journey" id="journey">
+  <div class="track" id="track">
+    <div class="jp intro"><div class="introgrid"><h2>From the floor to the data.</h2><pre class="portrait" aria-label="Portrait of Aaron Madewell drawn with SQL code characters" role="img">                              <i class="p1">..::</i><i class="p2">/=</i><i class="p3">+&lt;+++++++++++++++++++++++&lt;+</i><i class="p2">=/</i><i class="p1">:,..</i>                               
+                          <i class="p2">;/</i><i class="p3">+&lt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;&lt;&lt;&lt;++++++++++++++++++++&lt;&lt;&lt;&lt;&gt;&gt;&gt;&gt;&lt;&lt;</i><i class="p2">=/</i><i class="p1">:,.</i>                         
+                        <i class="p3">&gt;{{&gt;&lt;&lt;+++++++++&lt;&lt;&lt;&lt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;&lt;++++++++++&lt;&lt;&gt;&gt;&gt;&gt;&lt;</i><i class="p2">=</i>                       
+                      <i class="p3">&gt;&lt;+++++++++&lt;&lt;&gt;{{{&gt;&lt;++</i><i class="p2">=/</i><i class="p1">:,,....,,,::</i><i class="p2">/</i><i class="p3">+&lt;&gt;&gt;&lt;++++++++++++&lt;&lt;&gt;&gt;</i>                     
+                     <i class="p3">+++++++++&lt;{{&gt;&lt;</i><i class="p2">=</i><i class="p1">:,.</i>             <i class="p1">......</i> <i class="p1">.,</i><i class="p2">/</i><i class="p3">&lt;&gt;&lt;+++++++++++++++</i>                    
+                    <i class="p3">+++++++&lt;{{&lt;</i><i class="p2">;</i><i class="p1">.</i>            <i class="p1">..</i>         <i class="p1">..,,.</i>  <i class="p1">:</i><i class="p3">+&lt;&lt;++++++++++++++</i>                   
+                   <i class="p3">++++++&gt;</i><i class="p4">}</i><i class="p3">{</i><i class="p2">/</i><i class="p1">.</i>                <i class="p1">.,,,,.</i>  <i class="p1">..</i>   <i class="p1">.:</i><i class="p2">;</i><i class="p1">:,:</i><i class="p2">/</i><i class="p3">&gt;&gt;&lt;&lt;&lt;&lt;++++++++++</i>                  
+                  <i class="p3">+&lt;+++&gt;</i><i class="p4">}</i><i class="p3">&lt;</i><i class="p1">:</i>                     <i class="p1">.,</i><i class="p2">/;</i><i class="p1">.</i>  <i class="p1">,,.,..</i><i class="p2">=;</i><i class="p1">,</i><i class="p2">/</i><i class="p1">:,:</i><i class="p2">;;/</i><i class="p3">++&lt;&lt;++++++++</i>                 
+                 <i class="p3">&lt;++++{</i><i class="p4">}</i><i class="p1">:</i>                <i class="p1">...,</i>  <i class="p1">.</i> <i class="p1">.:</i><i class="p2">;;</i><i class="p1">,</i>     <i class="p1">.</i> <i class="p1">,:..</i>    <i class="p1">..:::</i><i class="p2">/=</i><i class="p3">&lt;&lt;&lt;+++++</i>                
+                <i class="p3">++++&lt;</i><i class="p4">}</i><i class="p3">&lt;</i><i class="p1">.</i>               <i class="p1">...</i><i class="p2">;/;</i><i class="p1">,</i> <i class="p1">.</i>   <i class="p1">..</i> <i class="p1">.</i>        <i class="p1">.</i> <i class="p1">.</i>     <i class="p1">,:,,,:</i><i class="p2">/</i><i class="p3">&lt;&lt;+++++</i>               
+               <i class="p3">++&lt;++</i><i class="p4">}</i><i class="p3">+</i>                <i class="p1">.:</i><i class="p2">;</i><i class="p1">:.</i>                             <i class="p1">.,,...,</i><i class="p2">=</i><i class="p3">&gt;+++++</i>              
+              <i class="p3">+++++</i><i class="p4">}#</i>             <i class="p1">.,</i><i class="p2">;/</i><i class="p1">:.</i>        <i class="p1">..</i>  <i class="p1">,,.,.</i>    <i class="p1">..</i> <i class="p1">,</i><i class="p2">;</i><i class="p1">:</i>    <i class="p1">..:</i><i class="p2">;</i><i class="p1">::.</i>  <i class="p2">/</i><i class="p3">{+++++</i>             
+              <i class="p3">+++&lt;</i><i class="p4">}</i><i class="p3">&gt;</i><i class="p1">.</i>             <i class="p1">.,:.</i>  <i class="p1">...,:,,,,:</i><i class="p2">/=</i><i class="p4">}</i><i class="p3">{&gt;{</i><i class="p4">}#</i><i class="p3">&gt;&gt;&lt;+</i><i class="p2">==</i><i class="p3">&lt;&gt;</i><i class="p4">}#</i><i class="p2">;</i>    <i class="p1">.:</i><i class="p2">;;</i><i class="p1">:,</i>  <i class="p2">=</i><i class="p4">}</i><i class="p3">++++</i>             
+             <i class="p3">+++&gt;{</i><i class="p1">:</i>             <i class="p1">.</i>  <i class="p1">..,</i><i class="p2">;=</i><i class="p3">&lt;&gt;&lt;&gt;{&lt;+&gt;&gt;</i><i class="p4">#</i><i class="p5">@888888888880</i><i class="p4">##%%</i><i class="p5">00</i><i class="p3">&gt;</i><i class="p1">.</i>   <i class="p1">..,,,.</i>  <i class="p3">+{++++</i>            
+             <i class="p3">&lt;+&lt;</i><i class="p4">#</i><i class="p3">+</i>                <i class="p1">,:</i><i class="p2">/</i><i class="p3">+&gt;</i><i class="p4">}#}}%#}%%%</i><i class="p5">08000</i><i class="p4">%%%%%</i><i class="p5">0</i><i class="p4">%%%%#####</i><i class="p5">8</i><i class="p4">%</i><i class="p1">:</i>    <i class="p1">.</i>   <i class="p1">.</i>  <i class="p3">&gt;&gt;+++</i>            
+            <i class="p3">+++{+</i>              <i class="p1">..,::</i><i class="p2">=</i><i class="p3">&lt;{</i><i class="p4">###</i><i class="p5">00</i><i class="p4">%%%##</i><i class="p5">088880008@@@80</i><i class="p4">##%###%</i><i class="p5">8</i><i class="p4">#</i><i class="p1">,</i>   <i class="p1">.,.</i>    <i class="p1">:</i><i class="p3">{&lt;+++</i>           
+            <i class="p3">+++</i><i class="p4">}</i><i class="p2">=</i>            <i class="p1">..</i><i class="p2">;//;;</i><i class="p3">+{{</i><i class="p4">}#%%</i><i class="p5">80</i><i class="p4">%%%#</i><i class="p5">0888808@@@@@@8</i><i class="p4">%%</i><i class="p5">0</i><i class="p4">%#}#%%</i><i class="p3">{</i><i class="p1">:...,.</i>     <i class="p3">&gt;&gt;+++</i>           
+           <i class="p3">+&lt;&lt;&lt;{&lt;</i><i class="p1">.</i>         <i class="p1">.</i><i class="p2">;</i><i class="p1">::</i><i class="p2">/</i><i class="p3">+</i><i class="p2">==</i><i class="p3">+&lt;&gt;&gt;</i><i class="p4">}#%</i><i class="p5">0</i><i class="p4">%%%%%%%</i><i class="p5">880088@@@@@880080</i><i class="p4">}#%}}#</i><i class="p3">&gt;</i><i class="p2">/</i><i class="p1">..,</i>      <i class="p3">+{++++</i>          
+           <i class="p3">+++&lt;&lt;</i><i class="p4">#</i><i class="p1">,</i>        <i class="p1">,:::</i><i class="p2">;///=</i><i class="p3">+&lt;&lt;{</i><i class="p4">}}%</i><i class="p5">0</i><i class="p4">%%%</i><i class="p5">00</i><i class="p4">%</i><i class="p5">00008888888880000</i><i class="p4">%%#%#}}</i><i class="p3">{+</i><i class="p2">/</i><i class="p1">.,.</i>     <i class="p3">&lt;{++++</i>          
+           <i class="p3">&lt;&lt;++&gt;</i><i class="p4">}</i><i class="p1">,</i>       <i class="p1">.:</i><i class="p2">/</i><i class="p1">::</i><i class="p2">;///;=</i><i class="p3">&lt;&lt;{</i><i class="p4">}%%%</i><i class="p5">000000000000008080000</i><i class="p4">%%%%##%%#}</i><i class="p3">&gt;</i><i class="p2">;</i><i class="p1">.</i> <i class="p1">.</i>    <i class="p1">.</i><i class="p3">{&lt;++++</i>          
+           <i class="p3">&lt;+&lt;+&lt;</i><i class="p4">}</i><i class="p2">=</i>      <i class="p1">.,:</i><i class="p2">;</i><i class="p1">:,:</i><i class="p2">/=</i><i class="p3">&lt;&gt;&gt;&gt;&gt;{</i><i class="p4">}%</i><i class="p5">08888@@@8</i><i class="p4">%%%</i><i class="p5">088@@@@@@@@@@8000</i><i class="p4">####</i><i class="p5">0</i><i class="p3">&lt;</i><i class="p1">.</i>      <i class="p2">/</i><i class="p3">&gt;+++++</i>          
+           <i class="p3">+++++&lt;</i><i class="p4">#</i><i class="p2">;</i>     <i class="p1">,,,:::</i><i class="p2">;//=</i><i class="p3">&lt;&lt;&lt;{</i><i class="p4">##%</i><i class="p5">8@@@@@@@@</i><i class="p4">%</i><i class="p5">08@@@@@@@880</i><i class="p4">}</i><i class="p3">{&lt;++{</i><i class="p5">08</i><i class="p4">%##</i><i class="p5">0</i><i class="p4">%</i><i class="p1">.</i>      <i class="p3">&gt;&lt;+++++</i>          
+           <i class="p3">&lt;+++++{</i><i class="p4">}</i>    <i class="p1">.:,,,,.</i>        <i class="p1">..:</i><i class="p2">=</i><i class="p3">&lt;{</i><i class="p5">0@8880</i><i class="p4">#</i><i class="p3">{</i><i class="p4">##</i><i class="p3">{&gt;+</i><i class="p2">;</i><i class="p1">,....,:,:</i><i class="p2">/</i><i class="p1">:,</i><i class="p3">&gt;</i><i class="p5">80</i><i class="p4">%</i><i class="p5">0@</i><i class="p2">;</i>     <i class="p2">=</i><i class="p3">{++++++</i>          
+           <i class="p3">&lt;&lt;++++&lt;{</i><i class="p2">=</i><i class="p1">.</i>   <i class="p2">;</i><i class="p1">:.</i>    <i class="p1">.,</i><i class="p2">;;</i><i class="p1">:,.</i>     <i class="p1">,</i><i class="p2">;</i><i class="p3">&lt;&lt;</i><i class="p4">#</i><i class="p5">@@0</i><i class="p4">}</i><i class="p3">++</i><i class="p2">;</i><i class="p1">::,::</i><i class="p2">;/=</i><i class="p3">&lt;&lt;&gt;&gt;&gt;&lt;</i><i class="p2">==</i><i class="p3">&lt;</i><i class="p4">}</i><i class="p5">00</i><i class="p4">%</i><i class="p2">;</i>    <i class="p1">,</i><i class="p3">&gt;&lt;++++++</i>          
+           <i class="p3">+&lt;+++&lt;{&lt;</i><i class="p2">==</i>  <i class="p1">..:</i><i class="p2">/</i>  <i class="p1">..,::</i><i class="p2">;;/</i><i class="p3">+</i><i class="p2">=;</i><i class="p1">...</i>   <i class="p1">.:</i><i class="p2">;///</i><i class="p1">.,</i><i class="p2">;///;/=</i><i class="p3">&lt;{&lt;++&lt;</i><i class="p2">=/;</i> <i class="p1">,</i><i class="p2">/</i> <i class="p1">.</i> <i class="p1">,</i> <i class="p1">.:</i><i class="p3">&gt;</i><i class="p4">%#</i><i class="p2">==</i><i class="p3">+++++</i>          
+           <i class="p3">&lt;&lt;+++</i><i class="p4">}</i><i class="p3">+</i>      <i class="p1">,..</i> <i class="p1">,..,.</i> <i class="p1">..</i>  <i class="p1">,:</i><i class="p3">+</i><i class="p1">,</i>      <i class="p1">,,</i>  <i class="p1">,</i><i class="p5">0</i><i class="p3">{</i><i class="p2">/</i><i class="p1">:.</i><i class="p2">;</i><i class="p1">.</i> <i class="p1">.,</i><i class="p2">;</i><i class="p1">:,:</i><i class="p2">=/</i><i class="p3">+</i><i class="p2">=</i> <i class="p1">.</i><i class="p2">/</i><i class="p4">}</i><i class="p5">0</i><i class="p1">,</i> <i class="p5">0@8</i><i class="p3">+</i><i class="p2">/</i><i class="p3">{</i><i class="p2">=</i><i class="p3">+++++</i>          
+           <i class="p3">&lt;+++&lt;</i><i class="p4">}</i><i class="p1">.</i>  <i class="p1">..</i>  <i class="p2">;;</i><i class="p1">,</i> <i class="p2">=;</i><i class="p1">,</i>   <i class="p2">;</i><i class="p3">+</i><i class="p1">,.:</i><i class="p4">}</i><i class="p5">0</i><i class="p3">+</i><i class="p1">:,</i>   <i class="p3">&lt;</i><i class="p5">@@@</i><i class="p1">,,</i><i class="p5">08</i><i class="p3">&lt;</i><i class="p1">::</i><i class="p3">&gt;&lt;</i><i class="p1">::</i><i class="p3">+</i><i class="p4">%</i><i class="p3">+</i><i class="p1">,:</i><i class="p3">+&lt;</i><i class="p4">}</i><i class="p5">0</i> <i class="p3">{</i><i class="p5">@8@</i><i class="p3">+</i> <i class="p3">{</i><i class="p5">@8</i><i class="p4">%##</i><i class="p3">+</i><i class="p2">=</i><i class="p3">++++</i>          
+           <i class="p3">&lt;&lt;++{&lt;</i>   <i class="p1">,.</i> <i class="p1">.::</i><i class="p2">=</i><i class="p1">.</i><i class="p2">=</i><i class="p3">+</i><i class="p2">=;</i><i class="p1">.</i> <i class="p1">.:</i><i class="p2">/=</i><i class="p3">+&lt;</i><i class="p2">=</i><i class="p3">&lt;+</i><i class="p2">;</i>  <i class="p1">,</i><i class="p4">}</i><i class="p5">8@@8</i><i class="p1">.</i><i class="p2">;</i><i class="p5">@</i><i class="p4">%</i><i class="p3">+</i><i class="p2">;</i><i class="p1">:</i><i class="p2">;=</i><i class="p3">&lt;{&lt;&lt;+&gt;</i><i class="p4">}</i><i class="p5">0@</i><i class="p2">=</i><i class="p1">:</i><i class="p5">@@</i><i class="p4">%%}</i> <i class="p3">{</i><i class="p5">@@0</i><i class="p4">%</i><i class="p5">0</i><i class="p2">==</i><i class="p3">++++</i>          
+           <i class="p3">++++&gt;{</i><i class="p1">.</i> <i class="p1">,,</i>  <i class="p1">,::</i><i class="p2">/=</i><i class="p1">,</i><i class="p3">+&lt;&lt;&lt;</i><i class="p2">=/;/==</i><i class="p3">+&gt;&gt;&gt;</i><i class="p1">:</i> <i class="p1">.</i><i class="p2">;</i><i class="p4">}</i><i class="p5">8@@@8</i><i class="p1">,</i><i class="p3">+</i><i class="p5">@@@</i><i class="p4">%</i><i class="p3">{{&gt;{</i><i class="p4">#%}#</i><i class="p5">8@</i><i class="p3">{</i><i class="p1">.</i><i class="p5">0@0</i><i class="p4">%%#</i><i class="p1">.</i><i class="p3">&gt;</i><i class="p4">#%</i><i class="p5">@8</i><i class="p4">}</i><i class="p2">;</i><i class="p3">+++++</i>          
+            <i class="p3">++++</i><i class="p4">}</i><i class="p3">&lt;</i> <i class="p1">.</i>   <i class="p1">,:,</i><i class="p2">;</i><i class="p3">+&gt;</i><i class="p2">/</i><i class="p3">+&lt;</i><i class="p4">}%%</i><i class="p5">00000</i><i class="p4">}</i><i class="p3">{</i><i class="p2">/</i> <i class="p1">,:</i><i class="p2">/</i><i class="p5">08888@@</i><i class="p2">=/</i><i class="p3">{</i><i class="p4">%</i><i class="p5">8@@@@@8</i><i class="p4">%##</i><i class="p3">+</i><i class="p2">/</i><i class="p5">8@00</i><i class="p4">%%}</i><i class="p1">.</i><i class="p5">@</i><i class="p4">}</i><i class="p3">&gt;</i><i class="p5">@@</i><i class="p2">;/</i><i class="p3">++++</i>           
+            <i class="p3">++++&lt;</i><i class="p4">#</i><i class="p1">,</i>    <i class="p1">.:,:</i><i class="p2">;=</i><i class="p3">&lt;</i><i class="p2">=/;;/===/===</i><i class="p1">,,,</i><i class="p2">;</i><i class="p4">}</i><i class="p5">0</i><i class="p4">%</i><i class="p5">8@8</i><i class="p4">%</i><i class="p5">0@</i><i class="p4">%</i><i class="p3">&gt;+</i><i class="p2">=//====</i><i class="p3">&lt;&lt;</i><i class="p4">}</i><i class="p5">0@@@80</i><i class="p4">#</i><i class="p5">0</i><i class="p3">&gt;</i><i class="p1">.</i><i class="p4">}</i><i class="p3">&gt;</i><i class="p5">0@</i><i class="p4">#</i><i class="p1">:</i><i class="p3">+++++</i>           
+            <i class="p3">+++++</i><i class="p4">}</i><i class="p3">&lt;</i> <i class="p1">..</i>  <i class="p1">:,,:</i><i class="p2">;;=</i><i class="p3">&lt;&lt;&lt;&gt;{{</i><i class="p4">#</i><i class="p5">08</i><i class="p4">%</i><i class="p2">=</i><i class="p1">.</i><i class="p2">/</i><i class="p1">:</i><i class="p2">;</i><i class="p4">%</i><i class="p5">@8@@@@@88@@@@8008@@@@@@088</i><i class="p4">#}</i><i class="p5">0</i><i class="p2">;</i><i class="p1">:</i><i class="p5">880@</i><i class="p3">+</i><i class="p2">/</i><i class="p3">+++++</i>           
+             <i class="p3">++++&gt;</i><i class="p4">}</i><i class="p1">.</i> <i class="p2">;</i><i class="p1">.</i> <i class="p1">,,,:</i><i class="p2">;/</i><i class="p3">+{</i><i class="p4">}%%</i><i class="p5">8000</i><i class="p4">#</i><i class="p2">;</i> <i class="p1">,</i><i class="p3">&gt;</i><i class="p2">;</i> <i class="p2">;</i><i class="p4">}}#</i><i class="p5">8</i><i class="p4">%</i><i class="p3">&gt;&gt;</i><i class="p4">}</i><i class="p5">00</i><i class="p4">%#</i><i class="p5">0@@@@@@@@@8880</i><i class="p4">}}#</i> <i class="p3">+</i><i class="p5">@</i><i class="p4">%</i><i class="p5">8</i><i class="p3">{</i><i class="p2">;</i><i class="p3">+++++</i>            
+             <i class="p3">+++++</i><i class="p4">}</i><i class="p2">/</i> <i class="p1">,.</i> <i class="p1">.,.,:</i><i class="p2">;=</i><i class="p3">&gt;{</i><i class="p4">}#%%</i><i class="p5">0</i><i class="p4">%</i><i class="p3">&lt;</i><i class="p1">:..,</i>     <i class="p1">:</i><i class="p3">&gt;</i><i class="p4">}}</i><i class="p3">&lt;</i><i class="p1">:</i><i class="p3">{</i><i class="p5">@@</i><i class="p4">%#</i><i class="p5">08@@@@888000</i><i class="p4">#</i><i class="p3">{</i><i class="p4">#</i><i class="p2">/</i> <i class="p5">@@@@</i><i class="p2">==</i><i class="p3">+++++</i>            
+              <i class="p3">++++&lt;{</i><i class="p1">,</i>    <i class="p1">.,,,,:</i><i class="p3">+&gt;&gt;</i><i class="p4">}%%#}</i><i class="p3">&gt;&gt;&lt;+</i><i class="p2">/;</i><i class="p1">..</i><i class="p2">/</i><i class="p3">&lt;+</i><i class="p2">/</i><i class="p3">&gt;</i><i class="p4">#</i><i class="p5">00@@@@@8@88880800</i><i class="p4">%##</i><i class="p3">{{</i><i class="p1">:</i> <i class="p4">%#</i><i class="p3">{+</i><i class="p2">=</i><i class="p3">+++++</i>             
+               <i class="p3">++++&lt;{</i><i class="p2">=//</i>  <i class="p1">.,,:::</i><i class="p2">/</i><i class="p3">+&gt;&gt;</i><i class="p2">===</i><i class="p3">++</i><i class="p2">///</i><i class="p3">+</i><i class="p2">=</i><i class="p4">}</i><i class="p5">8@</i><i class="p3">&gt;</i><i class="p1">,</i><i class="p3">&lt;</i><i class="p4">}</i><i class="p3">{{{</i><i class="p4">}}}</i><i class="p5">08088000</i><i class="p4">%%%%#}</i><i class="p3">&lt;&lt;</i><i class="p1">.:</i><i class="p3">&lt;</i><i class="p2">===</i><i class="p3">+++++</i>              
+               <i class="p3">++++++&lt;{</i><i class="p4">%</i><i class="p1">:</i>  <i class="p1">.,,,:</i><i class="p2">;//</i><i class="p1">..:::,</i><i class="p2">;/</i><i class="p3">++</i><i class="p2">=</i><i class="p3">+&lt;&gt;</i><i class="p4">#}</i><i class="p3">{{</i><i class="p4">}}##%</i><i class="p3">{</i><i class="p2">/</i><i class="p3">&gt;</i><i class="p4">}</i><i class="p3">&gt;</i><i class="p4">}</i><i class="p5">80</i><i class="p4">%</i><i class="p5">0</i><i class="p4">#}}</i><i class="p3">&gt;&lt;&gt;</i><i class="p2">=</i> <i class="p3">+&gt;++++++++</i>              
+                <i class="p3">+++++++{&lt;</i>  <i class="p1">..,,:</i><i class="p2">;;;</i><i class="p1">..::.</i> <i class="p1">.</i> <i class="p1">.,:,,.::</i><i class="p2">;;/;;;//</i><i class="p1">.</i> <i class="p1">:</i><i class="p3">&lt;&gt;</i><i class="p5">@8</i><i class="p4">}}#</i><i class="p3">{</i><i class="p2">/</i><i class="p3">{&gt;&lt;</i><i class="p1">.</i><i class="p2">;</i><i class="p3">&gt;&lt;+++++++</i>               
+                 <i class="p3">++++++&lt;</i><i class="p4">}</i><i class="p1">:</i>  <i class="p1">..,,,,</i><i class="p2">/</i><i class="p3">+&gt;{{</i><i class="p2">==/;/</i><i class="p3">+</i><i class="p4">}</i><i class="p5">0@8@@@@@0</i><i class="p4">%##</i><i class="p5">88</i><i class="p4">}</i><i class="p2">/</i><i class="p3">&gt;</i><i class="p5">080</i><i class="p3">&gt;</i><i class="p2">=</i><i class="p4">#</i><i class="p3">{</i><i class="p2">/</i><i class="p3">&gt;{</i><i class="p2">;</i><i class="p1">.</i><i class="p3">&gt;&lt;+++++++</i>                
+                  <i class="p3">++++++&lt;</i><i class="p4">}</i><i class="p1">:</i>  <i class="p1">....</i> <i class="p1">,</i><i class="p2">;</i><i class="p3">+&lt;&lt;</i><i class="p2">//=;</i><i class="p1">..,:::::</i><i class="p2">/=</i><i class="p3">+&gt;</i><i class="p4">#%</i><i class="p5">08@0</i><i class="p3">{</i><i class="p4">}#</i><i class="p3">&gt;&gt;</i><i class="p2">/</i><i class="p3">+{&gt;&lt;&lt;</i><i class="p2">;</i><i class="p1">,</i><i class="p3">&lt;&lt;+++++++</i>                 
+                   <i class="p3">++++++&gt;{</i><i class="p1">:</i>  <i class="p1">.</i>   <i class="p1">...:</i><i class="p3">+</i><i class="p2">==</i><i class="p3">+++</i><i class="p2">/=;</i><i class="p1">.,:::</i><i class="p3">+</i><i class="p4">}%%</i><i class="p5">0</i><i class="p4">%</i><i class="p5">0</i><i class="p3">{+&lt;&lt;</i><i class="p2">=;</i><i class="p3">+&lt;&lt;&gt;{&gt;</i><i class="p1">,</i><i class="p2">;</i><i class="p3">+&lt;+++++++</i>                  
+                    <i class="p3">++++++&lt;{&lt;</i><i class="p1">.</i> <i class="p1">..</i>    <i class="p1">.:</i><i class="p2">/</i><i class="p3">+&lt;{</i><i class="p4">}}}%</i><i class="p5">0888@@@@@00</i><i class="p4">%}%</i><i class="p3">&lt;</i><i class="p1">,</i><i class="p2">/;</i><i class="p3">&lt;{++</i><i class="p2">;</i><i class="p1">.</i><i class="p2">;</i><i class="p5">8</i><i class="p4">#</i><i class="p1">,</i><i class="p3">+&gt;++++</i>                   
+                      <i class="p3">++++++{{</i>        <i class="p1">.,:</i><i class="p2">/</i><i class="p3">++&lt;+&lt;{</i><i class="p4">}#</i><i class="p3">{{</i><i class="p4">}#%%</i><i class="p5">0</i><i class="p4">#</i><i class="p5">0</i><i class="p4">}}</i><i class="p2">/</i><i class="p1">::</i><i class="p2">=</i><i class="p3">&lt;</i><i class="p2">/</i><i class="p1">.</i> <i class="p1">,</i><i class="p4">##</i><i class="p2">=</i><i class="p5">@</i><i class="p3">&lt;</i> <i class="p2">=</i><i class="p3">{&lt;</i>                     
+                       <i class="p3">+++++&gt;</i><i class="p4">#</i><i class="p1">.</i>           <i class="p1">..:,</i><i class="p2">;/;;</i><i class="p3">+</i><i class="p2">/;=</i><i class="p3">+&lt;+</i><i class="p2">;=</i><i class="p1">::,.</i>    <i class="p1">,</i><i class="p3">&gt;</i><i class="p5">80</i><i class="p3">&lt;</i><i class="p1">,</i><i class="p5">@@</i><i class="p3">{</i> <i class="p1">,</i>                      
+                         <i class="p3">++{&lt;</i><i class="p2">;</i><i class="p1">,</i> <i class="p1">...</i>         <i class="p1">.</i> <i class="p1">,:.</i> <i class="p1">,,,.,,.,,..</i>   <i class="p1">.</i><i class="p2">=</i><i class="p3">{</i><i class="p5">80</i><i class="p4">}#</i><i class="p2">/</i><i class="p3">+</i><i class="p5">@@@</i>                        
+                           <i class="p3">+</i> <i class="p3">+</i><i class="p1">,</i> <i class="p1">.....</i>        <i class="p1">.</i> <i class="p1">.</i>            <i class="p1">,</i><i class="p2">;=</i><i class="p3">{</i><i class="p4">%%#}#%</i><i class="p3">++</i><i class="p5">@@</i>                          
+                             <i class="p3">{</i><i class="p1">.</i> <i class="p1">,.......</i>                <i class="p1">.</i><i class="p2">/</i><i class="p3">+&lt;</i><i class="p4">}#%%###</i><i class="p5">0</i><i class="p4">%</i><i class="p2">=</i><i class="p3">&gt;</i><i class="p5">@</i>                            
+ <i class="p3">+++++++++++++&lt;&lt;&gt;&gt;&gt;&gt;&lt;+</i><i class="p2">/</i><i class="p1">:.</i>   <i class="p3">+&gt;</i><i class="p2">;</i> <i class="p1">.,..........</i> <i class="p1">.</i> <i class="p1">...,</i><i class="p2">/</i><i class="p3">+&lt;&gt;&gt;{</i><i class="p4">#}</i><i class="p3">{{</i><i class="p4">}}}#</i><i class="p5">08</i><i class="p3">&gt;</i><i class="p2">=</i><i class="p4">#</i><i class="p5">@@@@@@</i><i class="p4">%</i> <i class="p1">....</i>  <i class="p1">.</i><i class="p2">;</i><i class="p3">&lt;&gt;&gt;&gt;&lt;+++++++++</i>
+ <i class="p3">+++++</i><i class="p2">=</i><i class="p3">++&lt;&gt;&gt;&gt;&gt;&lt;</i><i class="p2">=;</i><i class="p1">:.</i>        <i class="p1">,</i><i class="p3">+&lt;{</i><i class="p1">:</i> <i class="p1">.,,,,,,..,.,:</i><i class="p2">///</i><i class="p3">+&gt;{{{{{{{&gt;{</i><i class="p4">}}#</i><i class="p5">0@</i><i class="p4">#</i><i class="p2">;</i><i class="p3">+</i><i class="p5">@@@@@@@@</i><i class="p2">;</i> <i class="p1">,.</i> <i class="p1">.,,,..::</i><i class="p2">/=</i><i class="p3">&lt;&gt;&gt;&gt;&lt;++</i><i class="p2">==</i>
+ <i class="p3">+++&lt;&gt;&gt;&gt;&lt;+</i><i class="p2">=</i><i class="p1">:,</i>              <i class="p1">:</i><i class="p3">++</i><i class="p4">}%</i><i class="p1">:</i> <i class="p1">,:::::,,,,..</i><i class="p2">=</i><i class="p3">{{{&gt;&lt;&gt;&gt;&gt;{{{{</i><i class="p4">}#%</i><i class="p5">8</i><i class="p4">#</i><i class="p2">/;</i><i class="p4">#</i><i class="p5">@@@@@@@@</i><i class="p4">%</i> <i class="p1">.,,.,,::,,,.</i>   <i class="p1">.:</i><i class="p2">/=</i><i class="p3">+&gt;&gt;&lt;</i>
+ <i class="p3">&gt;&gt;&lt;+</i><i class="p2">/</i><i class="p1">:.</i>                   <i class="p2">==</i><i class="p3">+{</i><i class="p4">%</i><i class="p5">8</i><i class="p2">;</i> <i class="p1">:</i><i class="p2">;;;;;</i><i class="p1">:::,</i>  <i class="p2">=</i><i class="p5">0</i><i class="p3">&gt;</i><i class="p2">=</i><i class="p3">&gt;{</i><i class="p4">}##</i><i class="p3">{</i><i class="p4">}}#</i><i class="p5">0</i><i class="p4">%</i><i class="p2">=</i><i class="p1">,</i><i class="p3">&lt;</i><i class="p5">@@@@@@@@@@</i><i class="p2">;</i> <i class="p1">,,,,,,,,,,,:,..</i>     <i class="p1">.:</i><i class="p2">=</i>
+ <i class="p1">.</i>                        <i class="p1">.</i><i class="p3">&lt;</i><i class="p2">/=</i><i class="p3">{</i><i class="p4">%</i><i class="p5">8@</i><i class="p2">=</i> <i class="p1">:</i><i class="p2">/===/;;;;</i><i class="p1">,</i> <i class="p1">:</i><i class="p3">+&gt;{</i><i class="p4">#%%}</i><i class="p3">&gt;{</i><i class="p4">#%</i><i class="p3">&lt;</i><i class="p1">,</i><i class="p2">/</i><i class="p5">8@@@@@@@@@@</i><i class="p4">%</i>  <i class="p1">,,,,,,,,,,,,,,.......</i>  
+                          <i class="p2">;</i><i class="p3">&lt;</i><i class="p2">/=</i><i class="p3">&gt;</i><i class="p4">%%</i><i class="p5">@@</i><i class="p3">{</i><i class="p1">.:</i><i class="p2">=</i><i class="p3">+++</i><i class="p2">/;//</i><i class="p3">+&lt;&lt;&gt;{</i><i class="p4">}##}</i><i class="p3">&gt;{</i><i class="p4">%</i><i class="p3">{</i><i class="p1">::</i><i class="p4">#</i><i class="p5">@@@@@@@@@@@@</i><i class="p3">&gt;</i> <i class="p1">.,,,,,,,,,,,,,,,........</i>
+                        <i class="p1">:.</i><i class="p2">/</i><i class="p3">+</i><i class="p2">//</i><i class="p3">&gt;</i><i class="p5">8@@8@0</i><i class="p2">;;</i><i class="p3">+&lt;&gt;&lt;</i><i class="p2">==/=</i><i class="p3">&lt;{{</i><i class="p4">}#}</i><i class="p3">{&gt;&gt;&lt;</i><i class="p2">/</i><i class="p1">:</i><i class="p3">&gt;</i><i class="p5">@@@@@@@@@@@@@@</i><i class="p2">;</i> <i class="p1">,,,,,,,,,,::,...........</i>
+                       <i class="p1">.</i><i class="p3">&lt;</i><i class="p1">,</i><i class="p2">==//</i><i class="p4">%</i><i class="p5">0</i><i class="p3">+</i><i class="p1">,</i> <i class="p1">.</i><i class="p2">/</i><i class="p3">{&gt;&lt;&lt;&lt;&gt;&lt;&lt;</i><i class="p2">==</i><i class="p3">+&lt;&gt;{&gt;+</i><i class="p2">;</i><i class="p1">::</i><i class="p2">=</i><i class="p3">&gt;</i><i class="p5">0@@@@@@@@@@@@@@</i><i class="p4">%</i>  <i class="p1">,,,,,,,,,,,</i> <i class="p1">............</i>
+                       <i class="p3">&gt;{</i><i class="p1">:</i><i class="p2">=/=</i><i class="p4">}</i><i class="p2">=</i>     <i class="p1">.,</i><i class="p2">=</i><i class="p4">}</i><i class="p3">{{&gt;&lt;&lt;+</i><i class="p2">=</i><i class="p3">++</i><i class="p2">=;;=</i><i class="p3">&lt;{</i><i class="p4">%</i><i class="p5">0</i><i class="p2">=</i> <i class="p2">;</i><i class="p3">{</i><i class="p5">@@@@@@@@@@@@</i><i class="p3">&gt;</i> <i class="p1">.,,,,,,,,,,,.............</i>
+                      <i class="p1">:</i><i class="p5">0</i><i class="p3">&lt;</i><i class="p1">.</i><i class="p2">=</i><i class="p3">&lt;{</i><i class="p1">:</i>  <i class="p1">...</i>  <i class="p1">.</i><i class="p2">=</i><i class="p3">{&gt;</i><i class="p2">=</i><i class="p3">&lt;{</i><i class="p4">}</i><i class="p3">&gt;</i><i class="p2">=;;/</i><i class="p3">&lt;</i><i class="p5">088@</i><i class="p4">}</i><i class="p1">:</i>    <i class="p1">.</i><i class="p2">=</i><i class="p4">%</i><i class="p5">@@@@@@@@@</i><i class="p1">:</i> <i class="p1">,,,,,,,,,,,,.............</i>
+ <i class="p1">..</i>     <i class="p1">.</i>             <i class="p4">}</i><i class="p5">0</i><i class="p3">&gt;</i> <i class="p3">&lt;&lt;</i><i class="p1">:</i><i class="p2">;</i><i class="p3">&lt;+</i><i class="p1">:..</i>    <i class="p1">.,,::</i><i class="p2">/</i><i class="p3">+</i><i class="p2">/=</i><i class="p4">##%</i><i class="p5">@@</i><i class="p4">#</i><i class="p2">;</i>  <i class="p1">,,.</i>    <i class="p1">:</i><i class="p4">}</i><i class="p5">@@@@@@</i><i class="p4">%</i>  <i class="p1">,,,,,,,,,,,,,.,..........</i>
+ <i class="p1">..</i>                <i class="p1">.</i> <i class="p2">/</i><i class="p5">@</i><i class="p4">}}</i><i class="p2">=</i><i class="p4">}</i><i class="p3">{</i><i class="p2">=</i><i class="p3">&lt;</i><i class="p4">%</i><i class="p5">8</i><i class="p4">#</i><i class="p3">+</i><i class="p2">;</i><i class="p1">.</i>    <i class="p1">:.</i><i class="p2">;;</i><i class="p1">,,</i><i class="p3">&lt;</i><i class="p4">%##</i><i class="p5">0</i><i class="p4">#</i><i class="p2">;</i>  <i class="p1">,,</i> <i class="p1">.</i><i class="p2">;</i><i class="p3">+&lt;</i><i class="p2">/</i><i class="p1">.</i>  <i class="p1">.</i><i class="p3">&lt;</i><i class="p5">0@@@</i><i class="p3">&lt;</i>  <i class="p1">,,,,,,,.....,..,.,......</i> 
+ <i class="p1">..</i>    <i class="p1">.</i>             <i class="p4">}</i><i class="p5">8</i><i class="p3">{</i><i class="p4">#%#}</i><i class="p3">&gt;&gt;</i><i class="p4">#</i><i class="p5">80</i><i class="p4">##</i><i class="p3">{</i><i class="p1">,</i> <i class="p1">.</i>   <i class="p1">.,</i>  <i class="p1">.</i><i class="p2">//</i><i class="p1">:,</i> <i class="p1">.,</i>   <i class="p2">=</i><i class="p5">@@@</i><i class="p4">%}</i><i class="p5">08</i><i class="p4">#</i><i class="p2">=</i><i class="p1">,</i><i class="p2">;</i><i class="p3">&lt;</i><i class="p5">0@</i><i class="p2">/</i> <i class="p1">.,,,,,,,,,,.</i> <i class="p1">.,..,.......</i> 
+  <i class="p1">.</i>    <i class="p1">.</i>          <i class="p1">.</i> <i class="p1">,</i><i class="p5">8</i><i class="p4">}}#}#}}</i><i class="p3">{</i><i class="p4">}</i><i class="p5">88</i><i class="p4">%}}</i><i class="p3">{</i><i class="p2">;</i><i class="p1">.,</i>     <i class="p1">...</i> <i class="p1">..</i><i class="p2">/</i><i class="p1">:</i>  <i class="p2">=</i><i class="p5">0@@</i><i class="p4">%}#</i><i class="p5">@@@@@@@@@</i><i class="p4">%</i><i class="p1">.</i> <i class="p1">,,,,,,,,,,,,,,,.,,.,,,,.</i>  
+    <i class="p1">.</i>  <i class="p1">.</i>          <i class="p1">.</i> <i class="p3">&gt;</i><i class="p5">8</i><i class="p4">}###%##</i><i class="p3">{{</i><i class="p5">880</i><i class="p4">%}</i><i class="p3">{&lt;</i><i class="p1">:..</i>    <i class="p2">;</i><i class="p1">:.::,:.,</i><i class="p4">%</i><i class="p5">@@</i><i class="p4">%}#</i><i class="p5">8@@@@@@@@@@</i><i class="p3">&lt;</i>  <i class="p1">,,,,,,,,,,,,,,.,,..,,,</i>    
+                 <i class="p1">.</i>  <i class="p5">88</i><i class="p4">}%</i><i class="p5">00</i><i class="p4">%%#</i><i class="p3">{{</i><i class="p5">80</i><i class="p4">%%#</i><i class="p3">{&gt;</i><i class="p2">/</i><i class="p1">:.</i>    <i class="p1">.::</i><i class="p2">/</i><i class="p1">,</i>  <i class="p2">;</i><i class="p5">@@0</i><i class="p3">{</i><i class="p4">}</i><i class="p5">0@@@@@@@@@@@0</i><i class="p2">;</i> <i class="p1">.,,,,,,,,,,,,,..,...</i>       </pre></div></div>
+    <div class="jp"><div class="yr">2020</div><h3>Fixing things for people</h3><p>Technical support volunteer at a non-profit. I write each fix down in plain words.</p></div>
+    <div class="jp"><div class="yr">Oct</div><h3>Running the floor</h3><p>Shift supervisor at Starbucks from October 2020. Problems solved by procedure, not guesswork.</p></div>
+    <div class="jp"><div class="yr">2022</div><h3>Leading twelve people</h3><p>Store manager. I live in POS, scheduling and inventory systems every day, and I escalate problems with written reports.</p></div>
+    <div class="jp"><div class="yr">2023</div><h3>Learning to test and query</h3><p>QA bootcamp: test cases, SQL, API tests, Selenium, defects in JIRA.</p></div>
+    <div class="jp now"><div class="yr">2027</div><h3>Software development degree</h3><p>A.A.S. in progress at St. Louis Community College. Java, databases and a team sprint so far.</p></div>
+    <div class="jp end"><h2 class="big" style="max-width:10ch">Now watch it work.</h2><a class="btn primary" href="#story">Run the story</a></div>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="stage" id="stage">
+    <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <article class="step" data-i="0">
+      <div class="cap"><h3>Count what is on the shelf.</h3><p>Every store day starts with a count. In SQL, it is one query.</p></div>
+      <div class="win"><div class="bar"><span>inventory_sample.db</span><span class="meta"></span></div><pre class="sql"></pre><div class="res"></div></div>
+    </article>
+    <article class="step" data-i="1">
+      <div class="cap"><h3>Spot what is running low.</h3><p>Compare stock with the reorder point and the shortfall shows itself.</p></div>
+      <div class="win"><div class="bar"><span>inventory_sample.db</span><span class="meta"></span></div><pre class="sql"></pre><div class="res"></div></div>
+    </article>
+    <article class="step" data-i="2">
+      <div class="cap"><h3>Know who to call, and how soon.</h3><p>Add the supplier and lead time, and the order list writes itself.</p></div>
+      <div class="win"><div class="bar"><span>inventory_sample.db</span><span class="meta"></span></div><pre class="sql"></pre><div class="res"></div></div>
+    </article>
+    <article class="step" data-i="3">
+      <div class="cap"><h3>See what really earns money.</h3><p>Revenue and margin by category, with cancelled orders left out.</p></div>
+      <div class="win"><div class="bar"><span>inventory_sample.db</span><span class="meta"></span></div><pre class="sql"></pre><div class="res"></div></div>
     </article>
   </div>
 </section>
 
-<section id="plan">
+<section class="numbers" id="numbers">
   <div class="wrap">
-    <div class="sec-label"><b>01</b> Test plan</div>
-    <h2>Five claims, five test cases.</h2>
-    <p class="lede">Every claim on this page is a test case with evidence behind it. Press the button and watch them run, or open each one.</p>
-    <div class="runner">
-      <button class="btn" id="run">&#9654; Run all tests</button>
-      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-      <span id="tally" aria-live="polite">0 / 5 passed</span>
+    <h2 class="reveal">What the sample data told me.</h2>
+    <div class="nums reveal">
+      <div class="num"><b><span id="n-low">4</span></b><span>products at or below their reorder point</span></div>
+      <div class="num"><b><span id="n-margin">50.4</span><small>%</small></b><span id="n-margin-l">margin in the weakest category, beverage</span></div>
+      <div class="num"><b><span id="n-south">6.0</span><small>days</small></b><span id="n-south-l">to ship in the South, against 1.0 in the North</span></div>
+      <div class="num"><b><span id="n-top">27.6</span><small>%</small></b><span>of revenue from the single biggest customer</span></div>
     </div>
-    <div id="cases">
-      <details class="tc" open>
-        <summary><span class="id">TC-01</span><span class="ti">Can lead and train a team</span><span class="pill todo res">Queued</span><span class="chev">&#9656;</span></summary>
-        <div class="ev"><ul><li>Store Manager at Starbucks since Jan 2022, leading and training a team of 12 baristas and shift supervisors.</li><li>Maintain documented procedures and quality standards; run audits for health, safety and policy compliance.</li><li>Previously Shift Supervisor (Oct 2020 &ndash; Dec 2021), coordinating daily operations.</li></ul></div>
-      </details>
-      <details class="tc">
-        <summary><span class="id">TC-02</span><span class="ti">Can troubleshoot and escalate clearly</span><span class="pill todo res">Queued</span><span class="chev">&#9656;</span></summary>
-        <div class="ev"><ul><li>Troubleshoot POS, equipment and scheduling-system issues, then escalate to support teams with clear written reports.</li><li>Technical support volunteer for a non-profit since Jul 2020: software, account and device issues, with documented fixes.</li><li>Explain technical steps to non-technical users.</li></ul></div>
-      </details>
-      <details class="tc">
-        <summary><span class="id">TC-03</span><span class="ti">Can turn data into decisions</span><span class="pill todo res">Queued</span><span class="chev">&#9656;</span></summary>
-        <div class="ev"><ul><li>Analyze sales, labor and inventory reports to find problems and improve store processes.</li><li>SQL since my QA bootcamp in 2023: joins, aggregates and data validation. See five analyses in the case study and run them live in the SQL lab.</li></ul></div>
-      </details>
-      <details class="tc">
-        <summary><span class="id">TC-04</span><span class="ti">Can write requirements and acceptance criteria</span><span class="pill todo res">Queued</span><span class="chev">&#9656;</span></summary>
-        <div class="ev"><ul><li>Written procedures (SOPs) and requirements documentation in daily operations.</li><li>Practice case study: functional requirements, user stories with acceptance criteria, process maps and UAT cases for an inventory system.</li></ul></div>
-      </details>
-      <details class="tc">
-        <summary><span class="id">TC-05</span><span class="ti">Can test software end to end</span><span class="pill todo res">Queued</span><span class="chev">&#9656;</span></summary>
-        <div class="ev"><ul><li>QA bootcamp project: Selenium WebDriver + Java + TestNG automation framework for the OrangeHRM application, with defects logged in JIRA.</li><li>QA bootcamp project: SQL data-integrity checks and REST API testing in Postman for a Student Information System.</li><li>Test case design, regression testing and expected-vs-actual documentation.</li></ul></div>
-      </details>
-    </div>
+    <div class="note reveal"><strong>Practice sample.</strong> The company and numbers are made up for this exercise. They are not employer data and not work experience. The SQL and analysis are real.</div>
+    
+    <details class="more reveal" id="casefile">
+      <summary>Open the full case file</summary>
+      <div class="in">
+        <div class="ctabs" role="tablist" aria-label="Case file sections">
+          <button class="ctab" role="tab" aria-selected="true" data-c="c1" type="button">Process maps</button>
+          <button class="ctab" role="tab" aria-selected="false" data-c="c2" type="button">User stories</button>
+          <button class="ctab" role="tab" aria-selected="false" data-c="c3" type="button">Data model</button>
+          <button class="ctab" role="tab" aria-selected="false" data-c="c4" type="button">Dashboard</button>
+          <button class="ctab" role="tab" aria-selected="false" data-c="c5" type="button">Testing and defects</button>
+          <button class="ctab" role="tab" aria-selected="false" data-c="c6" type="button">Backlog</button>
+        </div>
+        <div class="cpanel" id="c1"><h4>How an order moves today</h4><div class="mm" data-src="flowchart LR
+  A[Customer emails order] --&gt; B[Clerk checks spreadsheet]
+  B --&gt; C{Enough stock?}
+  C --&gt;|Yes| D[Write manual pick list]
+  C --&gt;|No| E[Call customer and wait for restock]
+  D --&gt; F[Warehouse picks and ships]
+  F --&gt; G[Status updated by hand, often late]
+  G --&gt; H[Stock counts fixed weekly]"></div><h4>How it should move</h4><div class="mm" data-src="flowchart LR
+  A[Order entered once] --&gt; B{Stock check}
+  B --&gt;|Enough| C[Pick list generated]
+  B --&gt;|Short| D[Shortfall flag to purchasing]
+  C --&gt; E[Picked: stock reduced]
+  E --&gt; F[Shipped: ship date recorded]
+  F --&gt; G[Delivered]
+  D --&gt; H[Daily reorder list with lead times]
+  E --&gt; H"></div></div>
+        <div class="cpanel" id="c2" hidden><p class="small">Twelve stories, each with Given, When, Then acceptance criteria.</p><div class="tscroll"><table class="plain"><thead><tr><th>ID</th><th>I want to</th><th>Acceptance criteria</th></tr></thead><tbody><tr><td>US-01</td><td>Enter an order once with its line items.</td><td>Given a customer and in-stock products, when I save an order, then the order and line items are stored and a product cannot repeat on one order.</td></tr><tr><td>US-02</td><td>Reject zero or negative quantities.</td><td>Given an order, when I add a line item with quantity 0 or less, then the system rejects it.</td></tr><tr><td>US-03</td><td>Use only agreed order statuses.</td><td>Given an order, when I set a status outside the five allowed, then the system rejects it.</td></tr><tr><td>US-04</td><td>Keep product codes unique.</td><td>Given an existing code, when I add a product with the same code, then the system rejects it.</td></tr><tr><td>US-05</td><td>Point line items at real products and orders.</td><td>Given a line item for a product that does not exist, when I save it, then the system rejects it.</td></tr><tr><td>US-06</td><td>Block picks that exceed stock.</td><td>Given 35 on hand, when I pick 500, then the pick is rejected, stock stays 35 and the shortfall is shown.</td></tr><tr><td>US-07</td><td>Reduce stock when I pick.</td><td>Given 60 on hand, when I pick 12, then on-hand becomes 48.</td></tr><tr><td>US-08</td><td>See a daily reorder list.</td><td>Given stock levels, when I open the list, then every product at or below reorder point shows with supplier and lead time, largest shortfall first.</td></tr><tr><td>US-09</td><td>Have the list update as stock changes.</td><td>Given a product above its reorder point, when a pick brings it to the point, then it appears on the next list.</td></tr><tr><td>US-10</td><td>Report revenue and margin by category.</td><td>Given orders in any status, when I run the report, then cancelled orders are excluded and margin is (price minus cost) over price, to one decimal.</td></tr><tr><td>US-11</td><td>Report shipping time by region.</td><td>Given orders with ship dates, when I run the report, then only shipped or delivered orders count, with order count and average days.</td></tr><tr><td>US-12</td><td>Require a ship date on shipped orders.</td><td>Given an order marked Shipped or Delivered, when I save it with no ship date, then the system rejects it.</td></tr></tbody></table></div></div>
+        <div class="cpanel" id="c3" hidden><div class="mm" data-src="erDiagram
+  suppliers ||--o{ products : supplies
+  products ||--|| inventory : &quot;stock level&quot;
+  customers ||--o{ orders : places
+  orders ||--|{ order_items : contains
+  products ||--o{ order_items : &quot;ordered as&quot;"></div><div class="tscroll"><table class="plain"><thead><tr><th>Table</th><th>Columns and rules</th></tr></thead><tbody><tr><td>suppliers</td><td>supplier_id (key), name, lead_time_days</td></tr><tr><td>products</td><td>product_id (key), sku (unique), name, category, unit_cost, unit_price, reorder_point, supplier_id</td></tr><tr><td>inventory</td><td>product_id (key), on_hand (never below 0)</td></tr><tr><td>customers</td><td>customer_id (key), name, region</td></tr><tr><td>orders</td><td>order_id (key), customer_id, order_date, status (5 allowed), shipped_date (required when Shipped or Delivered)</td></tr><tr><td>order_items</td><td>order_id + product_id (key), qty (above 0)</td></tr></tbody></table></div></div>
+        <div class="cpanel" id="c4" hidden><p class="small">Built live from the sample database. The Excel version has native charts.</p><div class="kpis" id="kpis"></div>
+          <div class="dbars"><div><h4>Revenue by category ($)</h4><div id="d-rev"></div><h4 style="margin-top:20px">Gross margin (%)</h4><div id="d-margin"></div></div>
+          <div><h4>Stock against reorder point</h4><div id="d-stock"></div><h4 style="margin-top:20px">Average days to ship</h4><div id="d-ship"></div></div></div>
+          <div class="dl2"><a class="btn sm" href="Inventory_Dashboard.xlsx" download>Excel dashboard</a></div></div>
+        <div class="cpanel" id="c5" hidden><p class="small">I ran 15 test cases against my first schema. Two failed, and both were real defects. I fixed them in version 1.1 and ran everything again.</p>
+          <div class="tscroll"><table class="plain"><thead><tr><th>Test</th><th>Story</th><th>Scenario</th><th>First schema</th><th>Version 1.1</th></tr></thead><tbody><tr><td>T01</td><td>US-01</td><td>Enter an order with one line item</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T02</td><td>US-02</td><td>Reject a line item with quantity 0</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T03</td><td>US-02</td><td>Reject a line item with negative quantity</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T04</td><td>US-03</td><td>Reject an invalid order status (&#x27;Lost&#x27;)</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T05</td><td>US-04</td><td>Reject a duplicate product code (SKU)</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T06</td><td>US-05</td><td>Reject a line item for a product that does not exist</td><td><span class="tag fail">FAIL</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T07</td><td>US-06</td><td>Block a pick that exceeds on-hand stock</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T08</td><td>US-07</td><td>Picking 12 units reduces stock by 12</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T09</td><td>US-08</td><td>Reorder list matches an independent calculation</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T10</td><td>US-09</td><td>A product that falls to its reorder point appears on the list</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T11</td><td>US-10</td><td>Revenue by category excludes cancelled orders and matches Python</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T12</td><td>US-10</td><td>Gross margin percent matches Python</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T13</td><td>US-11</td><td>Days-to-ship counts only shipped or delivered orders</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T14</td><td>US-12</td><td>Reject a &#x27;Shipped&#x27; order that has no ship date</td><td><span class="tag fail">FAIL</span></td><td><span class="tag pass">PASS</span></td></tr><tr><td>T15</td><td>US-01</td><td>Reject the same product twice on one order</td><td><span class="tag pass">PASS</span></td><td><span class="tag pass">PASS</span></td></tr></tbody></table></div>
+          <h4 style="margin-top:24px">Defect log</h4>
+          <div class="tscroll"><table class="plain"><thead><tr><th>ID</th><th>What was wrong</th><th>Fix</th></tr></thead><tbody>
+            <tr><td>D-001, medium</td><td>An order could be saved as Shipped with no ship date, which would drop it from the shipping report.</td><td>A check now requires a ship date on Shipped and Delivered orders and forbids one on the rest.</td></tr>
+            <tr><td>D-002, high</td><td>A line item for a product that does not exist was accepted, because SQLite ignores foreign keys unless a setting is turned on.</td><td>The schema turns the setting on, and the requirement is recorded for every connection.</td></tr></tbody></table></div>
+          <div class="dl2"><a class="btn sm" href="run_uat.py" download>run_uat.py</a><a class="btn sm" href="traceability.md" download>Traceability</a><a class="btn sm" href="defects.md" download>defects.md</a></div></div>
+        <div class="cpanel" id="c6" hidden><p class="small">Sprint 1 goal: orders can be entered with valid data, stock never goes negative, and shipped orders always carry a ship date. Story points are planning estimates for this practice project.</p>
+          <div class="tscroll"><table class="plain"><thead><tr><th>ID</th><th>Story</th><th>Points</th><th>Sprint</th></tr></thead><tbody><tr><td>US-01</td><td>Enter an order once with its line items.</td><td>3</td><td>Sprint 1</td></tr><tr><td>US-02</td><td>Reject zero or negative quantities.</td><td>1</td><td>Sprint 1</td></tr><tr><td>US-03</td><td>Use only agreed order statuses.</td><td>1</td><td>Sprint 1</td></tr><tr><td>US-04</td><td>Keep product codes unique.</td><td>1</td><td>Sprint 1</td></tr><tr><td>US-05</td><td>Point line items at real products and orders.</td><td>2</td><td>Sprint 1</td></tr><tr><td>US-06</td><td>Block picks that exceed stock.</td><td>3</td><td>Sprint 1</td></tr><tr><td>US-12</td><td>Require a ship date on shipped orders.</td><td>2</td><td>Sprint 1</td></tr><tr><td>US-07</td><td>Reduce stock when I pick.</td><td>2</td><td>Sprint 2</td></tr><tr><td>US-08</td><td>See a daily reorder list.</td><td>3</td><td>Sprint 2</td></tr><tr><td>US-09</td><td>Have the list update as stock changes.</td><td>2</td><td>Sprint 2</td></tr><tr><td>US-10</td><td>Report revenue and margin by category.</td><td>5</td><td>Sprint 3</td></tr><tr><td>US-11</td><td>Report shipping time by region.</td><td>3</td><td>Sprint 3</td></tr></tbody></table></div>
+          <div class="dl2"><a class="btn sm" href="backlog.csv" download>backlog.csv (Jira import)</a><a class="btn sm" href="sprint_plan.md" download>Sprint plan</a></div></div>
+      </div>
+    </details>
   </div>
 </section>
 
-<section id="shift">
-  <div class="wrap">
-    <div class="sec-label"><b>02</b> Shift report</div>
-    <h2>Where the analyst habits come from.</h2>
-    <p class="lede">A store runs on numbers, procedures and fast problem-solving. That is the same loop as analysis and QA.</p>
-    <div class="shift">
-      <div class="kpi"><small>Current</small><h3>Store Manager</h3><time>Starbucks &middot; Jan 2022 &ndash; present</time>
-        <ul><li>Lead and train a team of 12</li><li>Analyze sales, labor, inventory reports</li><li>Troubleshoot POS and scheduling systems</li></ul></div>
-      <div class="kpi"><small>Before</small><h3>Shift Supervisor</h3><time>Starbucks &middot; Oct 2020 &ndash; Dec 2021</time>
-        <ul><li>Coordinated daily operations</li><li>Resolved customer and team issues using standard procedures</li></ul></div>
-      <div class="kpi"><small>Ongoing</small><h3>Tech Support Volunteer</h3><time>Non-profit &middot; Jul 2020 &ndash; present</time>
-        <ul><li>Troubleshoot software, account, device issues</li><li>Document fixes for non-technical users</li></ul></div>
-    </div>
-    <div class="edu"><span><b>A.A.S. Software Development</b> &middot; St. Louis Community College &middot; in progress, expected May 2027</span><span><b>Google Project Management Certificate</b> &middot; completed</span></div>
-  </div>
-</section>
-
-<section id="coverage">
-  <div class="wrap">
-    <div class="sec-label"><b>03</b> Coverage report</div>
-    <h2>What's covered, and what isn't yet.</h2>
-    <p class="lede">A good test report lists the gaps too. Here are mine.</p>
-    <div class="cov">
-      <div class="box"><h3><span class="pill pass">Covered</span></h3><ul>
-        <li>Manual testing <span>test design, regression</span></li><li>SQL <span>joins, aggregates, validation</span></li><li>JIRA <span>defect tracking</span></li><li>Postman <span>REST API testing</span></li><li>Excel &amp; Google Workspace <span>reporting</span></li><li>Process documentation <span>SOPs, requirements</span></li></ul></div>
-      <div class="box"><h3><span class="pill warn">Partial</span></h3><ul>
-        <li>Selenium + Java + TestNG <span>built a framework; Java is rusty</span></li><li>Python <span>basic</span></li><li>Git / GitHub <span>working knowledge</span></li></ul></div>
-      <div class="box"><h3><span class="pill todo">Not yet</span></h3><ul>
-        <li>ServiceNow, Zendesk <span>lab use only</span></li><li>Salesforce, Workday, ERP <span>no hands-on</span></li><li>Formal BA title <span>building toward it</span></li></ul></div>
-    </div>
-    <div class="gap-note">I learn tools quickly and I'm honest about where I am. If your stack includes something in the "Not yet" column, I'd rather tell you now than guess in an interview.</div>
-  </div>
-</section>
-
-<section id="case">
-  <div class="wrap">
-    <div class="sec-label"><b>04</b> Featured case study</div>
-    <h2>Inventory &amp; Order Tracking: a business analysis.</h2>
-    <p class="lede">I defined requirements for a small supplier's inventory and ordering system, built the database, and analyzed it to answer operations questions: what to reorder, what earns margin, where shipping is slow.</p>
-    <div class="notice"><b>Practice sample.</b> The company, products and numbers are hypothetical, created for this exercise. They are not employer data and not work experience. The analysis, SQL and documents are real.</div>
-
-    <div class="cs-tabs" role="tablist" aria-label="Case study sections">
-      <button class="cs-tab" role="tab" aria-selected="true" data-p="p1">Problem</button>
-      <button class="cs-tab" role="tab" aria-selected="false" data-p="p2">Requirements</button>
-      <button class="cs-tab" role="tab" aria-selected="false" data-p="p3">Findings</button>
-      <button class="cs-tab" role="tab" aria-selected="false" data-p="p5">UAT</button>
-    </div>
-
-    <div class="panel" id="p1">
-      <div class="card"><h3>The problem</h3><p>A small wholesale supplier tracks stock and orders in spreadsheets. Staff learn about low stock only when an order can't be filled, some regions ship slowly, and managers can't see which products or customers drive profit.</p>
-        <div class="tw"><table><thead><tr><th>Stakeholder</th><th>Needs</th></tr></thead><tbody>
-          <tr><td>Operations manager</td><td>Fewer stock-outs, faster shipping</td></tr>
-          <tr><td>Warehouse staff</td><td>Clear pick/ship queue, accurate counts</td></tr>
-          <tr><td>Purchasing</td><td>Reorder list with supplier lead times</td></tr>
-          <tr><td>Finance</td><td>Revenue and margin by category and customer</td></tr></tbody></table></div></div>
-      <div class="card"><h3>As-is vs to-be</h3>
-        <div class="flow"><span class="step old">Order by email</span><span class="arrow">&rarr;</span><span class="step old">Check spreadsheet</span><span class="arrow">&rarr;</span><span class="step old">Manual pick list</span><span class="arrow">&rarr;</span><span class="step old">Ship</span><span class="arrow">&rarr;</span><span class="step old">Late status update</span></div>
-        <div class="flow" style="margin-top:14px"><span class="step new">Order entered once</span><span class="arrow">&rarr;</span><span class="step new">Stock check + shortfall flag</span><span class="arrow">&rarr;</span><span class="step new">Generated pick list</span><span class="arrow">&rarr;</span><span class="step new">Status with timestamps</span><span class="arrow">&rarr;</span><span class="step new">Daily reorder list</span></div></div>
-    </div>
-
-    <div class="panel" id="p2" hidden>
-      <div class="card"><h3>Functional requirements</h3><ul>
-        <li><b>FR1</b> Record orders with customer, date, status and line items.</li>
-        <li><b>FR2</b> Reduce on-hand quantity when an order is picked; never allow negative stock.</li>
-        <li><b>FR3</b> List products at or below reorder point with supplier and lead time.</li>
-        <li><b>FR4</b> Report revenue and margin by category and customer, excluding cancelled orders.</li>
-        <li><b>FR5</b> Report average days from order to shipment by region.</li></ul>
-        <h3 style="margin-top:16px">Non-functional</h3><ul><li><b>NFR1</b> Reports refresh daily and run in under 5 seconds for 10,000 orders.</li><li><b>NFR2</b> Only authorized staff can change stock counts; changes are logged.</li></ul></div>
-      <div class="card"><h3>User stories &amp; acceptance criteria</h3><div class="tw"><table><thead><tr><th>Story</th><th>Acceptance criteria</th></tr></thead><tbody>
-        <tr><td>As purchasing, I want a daily reorder list so I can order before stock runs out.</td><td>Products at or below reorder point appear with supplier and lead time, largest shortfall first.</td></tr>
-        <tr><td>As a picker, I want stock to drop when I mark an order Picked so counts stay accurate.</td><td>On Picked, on-hand falls by order quantity; if quantity exceeds on-hand the pick is blocked and the shortfall shown.</td></tr>
-        <tr><td>As finance, I want margin by category so I can see what drives profit.</td><td>Cancelled orders excluded. Margin % = (price &minus; cost) / price, rounded to 0.1.</td></tr>
-        <tr><td>As the operations manager, I want shipping time by region so I can find slow lanes.</td><td>Only shipped or delivered orders count; show order count and average days.</td></tr></tbody></table></div></div>
-    </div>
-
-    <div class="panel" id="p3" hidden>
-      <div class="card"><h3>What to reorder</h3><p>Red marker = reorder point. Bar = current stock.</p><div class="chart" id="c-reorder"></div>
-        <div class="find"><i></i><span>Coffee Beans are at 35 vs a reorder point of 40, from the supplier with the longest lead time (7 days). Order them first.</span></div></div>
-      <div class="card"><h3>Revenue by category ($)</h3><div class="chart" id="c-rev"></div>
-        <h3 style="margin-top:18px">Gross margin by category (%)</h3><div class="chart" id="c-margin"></div>
-        <div class="find"><i></i><span>Beverage is the largest category but has the lowest margin (50.4%). Merchandise has the highest (65.1%). Review beverage pricing or cost.</span></div></div>
-      <div class="card"><h3>Average days to ship, by region</h3><div class="chart" id="c-ship"></div>
-        <div class="find"><i></i><span>South took 6.0 days vs 1.0 in the North, but the South has only one shipped order here, so I'd gather more data before acting.</span></div>
-        <div class="find"><i></i><span>The largest customer is 27.6% of revenue (moderate concentration). No open order currently exceeds available stock.</span></div></div>
-    </div>
-
-    <div class="panel" id="p5" hidden>
-      <div class="card"><h3>User acceptance tests</h3><div class="tw"><table><thead><tr><th>ID</th><th>Scenario</th><th>Expected</th></tr></thead><tbody>
-        <tr><td>UAT1</td><td>Pick an order whose quantity exceeds on-hand</td><td>Pick blocked; shortfall message shown</td></tr>
-        <tr><td>UAT2</td><td>Cancel an order</td><td>Excluded from revenue and margin reports</td></tr>
-        <tr><td>UAT3</td><td>A pick drops a product to its reorder point</td><td>Appears on the next reorder list</td></tr>
-        <tr><td>UAT4</td><td>Insert an order item with quantity 0</td><td>Rejected by validation (must be &gt; 0)</td></tr>
-        <tr><td>UAT5</td><td>Order shipped without a ship date</td><td>Excluded from shipping report and flagged for cleanup</td></tr></tbody></table></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="lab">
-  <div class="wrap">
-    <div class="sec-label"><b>05</b> SQL lab</div>
-    <h2>Don't take my word for it. <span class="serif">Run it.</span></h2>
-    <p class="lede">This is a real SQLite database running in your browser. Pick a query or write your own (read-only SELECT).</p>
-    <div class="lab" style="margin-top:22px">
-      <div class="lab-top" id="presets"></div>
-      <textarea id="sql" spellcheck="false" aria-label="SQL query"></textarea>
-      <div class="lab-run"><button class="btn" id="go" disabled>&#9654; Run query</button><span id="status">Loading database&hellip;</span></div>
+<section class="labsec" id="lab">
+  <div class="wrap reveal">
+    <h2>Now run it yourself.</h2>
+    <p style="max-width:56ch">A real SQLite database, running in your browser. Pick a query or write your own. It accepts SELECT only.</p>
+    <div class="lab">
+      <div class="presets" id="presets" role="group" aria-label="Example queries"></div>
+      <label for="sql" style="position:absolute;left:-9999px">SQL query</label>
+      <textarea id="sql" spellcheck="false"></textarea>
+      <div class="runbar"><button class="btn primary sm" id="go" type="button" disabled>Run query</button><span id="status">Loading the database</span></div>
       <div id="out" aria-live="polite"></div>
     </div>
-    <p class="small" style="margin-top:16px">Tables: suppliers, products, inventory, customers, orders, order_items.</p>
-    <div class="dl" style="margin-top:16px">
-      <a class="btn ghost" href="BA_Case_Study_Inventory_Orders.docx" download>Case study (.docx)</a>
-      <a class="btn ghost" href="schema.sql" download>schema.sql</a>
-      <a class="btn ghost" href="seed.sql" download>seed.sql</a>
-      <a class="btn ghost" href="queries.sql" download>queries.sql</a>
-      <a class="btn ghost" href="inventory_sample.db" download>SQLite database</a>
+    <p style="margin-top:14px;font-size:14px">Tables: suppliers, products, inventory, customers, orders, order_items.</p>
+    <div class="downloads"><a class="btn sm" href="README.md" download>Case study README</a><a class="btn sm" href="Inventory_Dashboard.xlsx" download>Excel dashboard</a><a class="btn sm" href="schema.sql" download>schema.sql</a><a class="btn sm" href="seed.sql" download>seed.sql</a><a class="btn sm" href="queries.sql" download>queries.sql</a><a class="btn sm" href="inventory_sample.db" download>SQLite database</a></div>
+  </div>
+</section>
+
+<section class="course" id="coursework">
+  <div class="wrap">
+    <h2 class="reveal">Code I wrote in college.</h2>
+    <p class="reveal" style="max-width:56ch">Java and SQL projects from my A.A.S. program. Some began from instructor starter code, and each card says what I built.</p>
+    <div class="stack" id="stack">
+      <article class="card">
+        <h3>Team database sprint</h3>
+        <p>A group project for an employment-verification application. I owned the database behind the applicant form.</p>
+        <ul><li>Schema for applicants, income, household members and application status</li><li>SQLite database with sample applicants</li><li>Java JDBC example that inserts and reads records</li><li>Field-mapping file from form field to database column</li><li>README with a clear sprint boundary, plus a team update</li></ul>
+      </article>
+      <article class="card">
+        <h3>Sales database app</h3>
+        <p>A Java console app on a MySQL sales database.</p>
+        <ul><li>Loads customers into a sorted map</li><li>Looks up a customer by ID until you quit</li><li>SQL script builds and fills the database</li></ul>
+      </article>
+      <article class="card">
+        <h3>Annuity web calculator</h3>
+        <p>A Maven web app with Java servlets and JSP.</p>
+        <ul><li>The input screen keeps your previous values</li><li>Checked against a known result: $50 a month at 6% for 12 months gives $1,236.64</li></ul>
+      </article>
     </div>
+    <p class="after">I am not posting the source code, out of respect for course rules. I am glad to walk through any of it in an interview.</p>
+  </div>
+</section>
+
+<section class="ledger" id="ledger">
+  <div class="wrap reveal">
+    <h2>An honest ledger.</h2>
+    <div class="lrow"><h3>Working</h3><p>Requirements and user stories, SQL, manual testing, JIRA, Postman, Excel dashboards, process maps.</p></div>
+    <div class="lrow"><h3>Still growing</h3><p>Java and Selenium <span>(I am refreshing both)</span>, Python <span>(basic)</span>, Git and GitHub.</p></div>
+    <div class="lrow"><h3>Not yet</h3><p>Power BI, Tableau, ServiceNow, Zendesk, Salesforce, Workday, ERP, <span>and a formal business analyst title.</span></p></div>
   </div>
 </section>
 </main>
 
-<footer id="contact">
-  <div class="wrap">
-    <div class="sec-label"><b>06</b> Close the ticket</div>
-    <h2>Ready to move <span class="serif">HIRE-001</span> to Done?</h2>
-    <p class="lede">My name and contact details are on the r&eacute;sum&eacute; that brought you here. I keep them off the public web on purpose. I'm open to remote and Chicago-area roles.</p>
-    <p class="small">The Inventory &amp; Order Tracking case study uses hypothetical data created for practice. &copy; 2026</p>
+<footer>
+  <div class="wrap reveal">
+    <h2>Hiring for business analysis, operations or support?</h2>
+    <p>I am open to remote roles and roles in the Chicago area. My résumé has my full contact details.</p>
+    <a class="btn primary" href="https://www.linkedin.com/in/aaronmadewell/" rel="noopener">LinkedIn</a>
+    <div class="fine">The inventory data is made up for practice. © 2026 Aaron Madewell</div>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
 <script>
 (function(){
-  /* ---------- test runner ---------- */
-  var cases=[].slice.call(document.querySelectorAll('.tc')),bar=document.getElementById('bar'),tally=document.getElementById('tally'),running=false;
-  function setRes(el,state){
-    var p=el.querySelector('.res');
-    p.className='pill res '+(state==='pass'?'pass':state==='run'?'warn':'todo');
-    p.textContent=state==='pass'?'Passed':state==='run'?'Running':'Queued';
-  }
-  function run(){
-    if(running)return;running=true;
-    var n=0;cases.forEach(function(c){setRes(c,'q')});bar.style.width='0';tally.textContent='0 / '+cases.length+' passed';
-    (function next(i){
-      if(i>=cases.length){running=false;tally.textContent=cases.length+' / '+cases.length+' passed. Ticket ready to close.';return}
-      setRes(cases[i],'run');
-      setTimeout(function(){setRes(cases[i],'pass');n++;bar.style.width=(n/cases.length*100)+'%';tally.textContent=n+' / '+cases.length+' passed';next(i+1)},520);
-    })(0);
-  }
-  document.getElementById('run').addEventListener('click',run);
-  document.getElementById('resolve').addEventListener('click',function(){setTimeout(run,700)});
+  var root=document.documentElement;
+  try{var s=localStorage.getItem('theme');if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark';root.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next)}catch(e){}
+  });
 
-  /* ---------- charts ---------- */
-  function bars(id,rows,max,fmt,warm,marks){
-    var el=document.getElementById(id);
-    rows.forEach(function(r,i){
-      var row=document.createElement('div');row.className='row';
-      var pct=Math.max(2,r[1]/max*100);
-      var mark=marks?'<span class="mark" style="left:'+(marks[i]/max*100)+'%" title="Reorder point '+marks[i]+'"></span>':'';
-      row.innerHTML='<span>'+r[0]+'</span><div class="track"><div class="fill'+(warm?' warm':'')+'" data-w="'+pct+'"></div>'+mark+'</div><b>'+fmt(r[1])+'</b>';
-      el.appendChild(row);
-    });
+  function esc(v){return String(v).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+
+  /* queries used by the pinned story */
+  var story=[
+    "SELECT p.name, i.on_hand\nFROM products p\nJOIN inventory i ON i.product_id = p.product_id\nORDER BY i.on_hand;",
+    "SELECT p.name, i.on_hand, p.reorder_point,\n       p.reorder_point - i.on_hand AS short_by\nFROM products p\nJOIN inventory i ON i.product_id = p.product_id\nWHERE i.on_hand <= p.reorder_point\nORDER BY short_by DESC;",
+    "SELECT p.name, s.name AS supplier, s.lead_time_days\nFROM products p\nJOIN inventory i ON i.product_id = p.product_id\nJOIN suppliers s ON s.supplier_id = p.supplier_id\nWHERE i.on_hand <= p.reorder_point\nORDER BY s.lead_time_days DESC;",
+    "SELECT p.category,\n       SUM(oi.qty * p.unit_price) AS revenue,\n       ROUND(100.0 * SUM(oi.qty * (p.unit_price - p.unit_cost))\n             / SUM(oi.qty * p.unit_price), 1) AS margin_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status <> 'Cancelled'\nGROUP BY p.category ORDER BY revenue DESC;"
+  ];
+  var KW=/\b(SELECT|FROM|JOIN|ON|WHERE|ORDER BY|GROUP BY|AS|AND|SUM|ROUND|DESC)\b/g;
+  function hl(q){return esc(q).replace(KW,'<span class="kw">$1</span>')}
+  function table(res,low){
+    if(!res.length)return '<div class="err">No rows.</div>';
+    var r=res[0];
+    return '<table><thead><tr>'+r.columns.map(function(c){return '<th>'+esc(c)+'</th>'}).join('')+'</tr></thead><tbody>'+
+      r.values.map(function(row,i){return '<tr class="row-in" style="animation-delay:'+(i*70)+'ms">'+row.map(function(v,j){return '<td'+(low&&j===1?' class="low"':'')+'>'+esc(v===null?'NULL':v)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
   }
-  bars('c-reorder',[['Paper Cup 12oz',420],['Napkins 100ct',25],['Ceramic Mug',12],['Coffee Beans 1lb',35]],520,function(v){return v},false,[500,60,20,40]);
-  bars('c-rev',[['Beverage',900],['Merchandise',662.61],['Supplies',383.6],['Packaging',192.5]],900,function(v){return '$'+v.toFixed(0)});
-  bars('c-margin',[['Merchandise',65.1],['Packaging',62.3],['Supplies',61.7],['Beverage',50.4]],70,function(v){return v.toFixed(1)+'%'},true);
-  bars('c-ship',[['South',6.0],['West',3.0],['North',1.0]],6.5,function(v){return v.toFixed(1)+' d'},true);
-  function grow(scope){scope.querySelectorAll('[data-w]').forEach(function(n){n.style.width='0'});requestAnimationFrame(function(){requestAnimationFrame(function(){scope.querySelectorAll('[data-w]').forEach(function(n){n.style.width=n.getAttribute('data-w')+'%'})})})}
 
-  /* ---------- case-study tabs ---------- */
-  var tabs=document.querySelectorAll('.cs-tab');
-  tabs.forEach(function(t){t.addEventListener('click',function(){
-    tabs.forEach(function(x){x.setAttribute('aria-selected','false')});t.setAttribute('aria-selected','true');
-    document.querySelectorAll('.panel').forEach(function(p){p.hidden=true});
-    var p=document.getElementById(t.dataset.p);p.hidden=false;p.querySelectorAll('.chart').forEach(grow);
-  })});
+  var db=null,steps=[].slice.call(document.querySelectorAll('.step')),dots=[].slice.call(document.querySelectorAll('#dots i')),cur=-1;
+  steps.forEach(function(st,i){st.querySelector('.sql').innerHTML=hl(story[i])});
+  function fillStep(i){
+    if(!db)return;
+    var st=steps[i],res=db.exec(story[i]);
+    st.querySelector('.res').innerHTML=table(res,i===1);
+    st.querySelector('.meta').textContent=(res.length?res[0].values.length:0)+' rows';
+  }
+  function setStep(i){
+    if(i===cur)return;cur=i;
+    steps.forEach(function(s,k){s.classList.toggle('on',k===i)});
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
+    fillStep(i);
+  }
 
-  /* ---------- SQL lab (sql.js) ---------- */
+  /* lab */
   var presets=[
     ['Reorder list',"SELECT p.sku, p.name, i.on_hand, p.reorder_point, s.name AS supplier, s.lead_time_days\nFROM products p\nJOIN inventory i ON i.product_id = p.product_id\nJOIN suppliers s ON s.supplier_id = p.supplier_id\nWHERE i.on_hand <= p.reorder_point\nORDER BY (p.reorder_point - i.on_hand) DESC;"],
-    ['Margin by category',"SELECT p.category,\n       SUM(oi.qty * p.unit_price) AS revenue,\n       ROUND(100.0 * SUM(oi.qty * (p.unit_price - p.unit_cost)) / SUM(oi.qty * p.unit_price), 1) AS margin_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status <> 'Cancelled'\nGROUP BY p.category\nORDER BY revenue DESC;"],
+    ['Margin by category',story[3]],
     ['Days to ship',"SELECT c.region, COUNT(*) AS orders,\n       ROUND(AVG(julianday(o.shipped_date) - julianday(o.order_date)), 1) AS avg_days_to_ship\nFROM orders o JOIN customers c ON c.customer_id = o.customer_id\nWHERE o.shipped_date IS NOT NULL\nGROUP BY c.region\nORDER BY avg_days_to_ship DESC;"],
     ['Unfillable open orders',"SELECT o.order_id, c.name AS customer, p.sku, oi.qty AS ordered, i.on_hand\nFROM orders o\nJOIN customers c ON c.customer_id = o.customer_id\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nJOIN inventory i ON i.product_id = p.product_id\nWHERE o.status IN ('Placed','Picked') AND oi.qty > i.on_hand;"],
     ['Top customers',"WITH rev AS (\n  SELECT c.name, SUM(oi.qty * p.unit_price) AS revenue\n  FROM orders o JOIN customers c ON c.customer_id = o.customer_id\n  JOIN order_items oi ON oi.order_id = o.order_id\n  JOIN products p ON p.product_id = oi.product_id\n  WHERE o.status <> 'Cancelled' GROUP BY c.name)\nSELECT name, revenue, ROUND(100.0 * revenue / (SELECT SUM(revenue) FROM rev), 1) AS pct_of_total\nFROM rev ORDER BY revenue DESC;"]
   ];
-  var ta=document.getElementById('sql'),ps=document.getElementById('presets'),out=document.getElementById('out'),st=document.getElementById('status'),go=document.getElementById('go'),db=null;
-  presets.forEach(function(p,i){var b=document.createElement('button');b.className='qbtn';b.textContent=p[0];b.addEventListener('click',function(){ta.value=p[1];if(db)exec()});ps.appendChild(b)});
+  var ta=document.getElementById('sql'),ps=document.getElementById('presets'),out=document.getElementById('out'),st=document.getElementById('status'),go=document.getElementById('go'),btns=[];
+  presets.forEach(function(p,i){var b=document.createElement('button');b.type='button';b.className='pbtn';b.textContent=p[0];b.setAttribute('aria-pressed',i===0?'true':'false');
+    b.addEventListener('click',function(){btns.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');ta.value=p[1];if(db)exec()});ps.appendChild(b);btns.push(b)});
   ta.value=presets[0][1];
-  function esc(v){return String(v).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
   function exec(){
     var q=ta.value.trim();out.innerHTML='';
-    if(!/^(select|with)\b/i.test(q)){out.innerHTML='<div class="err">Read-only lab: queries must start with SELECT or WITH.</div>';return}
+    if(!/^(select|with)\b/i.test(q)){out.innerHTML='<div class="err">This lab is read-only. A query must start with SELECT or WITH.</div>';return}
     try{
       var t0=performance.now(),res=db.exec(q),ms=(performance.now()-t0).toFixed(1);
-      if(!res.length){out.innerHTML='<div class="err" style="color:var(--pass)">Query ran in '+ms+' ms and returned 0 rows.</div>';st.textContent='0 rows';return}
-      var r=res[0],h='<table><thead><tr>'+r.columns.map(function(c){return '<th>'+esc(c)+'</th>'}).join('')+'</tr></thead><tbody>'+r.values.map(function(row){return '<tr>'+row.map(function(v){return '<td>'+esc(v===null?'NULL':v)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
-      out.innerHTML=h;st.textContent=r.values.length+' row(s) in '+ms+' ms';
+      if(!res.length){out.innerHTML='<div class="err">The query ran in '+ms+' ms and returned no rows.</div>';st.textContent='0 rows';return}
+      var r=res[0];
+      out.innerHTML='<table><thead><tr>'+r.columns.map(function(c){return '<th>'+esc(c)+'</th>'}).join('')+'</tr></thead><tbody>'+r.values.map(function(row){return '<tr>'+row.map(function(v){return '<td>'+esc(v===null?'NULL':v)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
+      st.textContent=r.values.length+' row(s) in '+ms+' ms';
     }catch(e){out.innerHTML='<div class="err">'+esc(e.message)+'</div>';st.textContent='Error'}
   }
   go.addEventListener('click',exec);
   ta.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'&&db)exec()});
+
+  /* hero card + live numbers, all from the same database */
+  function heroAndNumbers(){
+    var rows=db.exec("SELECT p.name, i.on_hand, p.reorder_point, s.lead_time_days FROM products p JOIN inventory i ON i.product_id=p.product_id JOIN suppliers s ON s.supplier_id=p.supplier_id WHERE i.on_hand<=p.reorder_point ORDER BY (p.reorder_point-i.on_hand)*1.0/p.reorder_point DESC")[0].values;
+    document.getElementById('hero-rows').innerHTML=rows.map(function(r,i){return '<tr class="row-in" style="animation-delay:'+(i*90)+'ms"><td>'+esc(r[0])+'</td><td class="n low">'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="n">'+r[3]+'</td></tr>'}).join('');
+    document.getElementById('hero-note').textContent=rows.length+' products at or below reorder point';
+    var low=rows.length;
+    var mg=db.exec(story[3])[0].values.slice().sort(function(a,b){return a[2]-b[2]})[0];
+    var sh=db.exec("SELECT c.region, ROUND(AVG(julianday(o.shipped_date)-julianday(o.order_date)),1) d FROM orders o JOIN customers c ON c.customer_id=o.customer_id WHERE o.shipped_date IS NOT NULL GROUP BY c.region ORDER BY d DESC")[0].values;
+    var top=db.exec(presets[4][1])[0].values[0];
+    var slow=sh[0],fast=sh[sh.length-1];
+    setNum('n-low',low,0);setNum('n-margin',mg[2],1);setNum('n-south',slow[1],1);setNum('n-top',top[2],1);
+    document.getElementById('n-margin-l').textContent='margin in the weakest category, '+mg[0].toLowerCase();
+    document.getElementById('n-south-l').textContent='to ship in the '+slow[0]+', against '+fast[1].toFixed(1)+' in the '+fast[0];
+  }
+  var numTargets={};
+  function setNum(id,v,d){numTargets[id]=[v,d];document.getElementById(id).textContent=v.toFixed(d)}
+  function countUp(){
+    Object.keys(numTargets).forEach(function(id){
+      var t=numTargets[id],o={v:0},el=document.getElementById(id);
+      gsap.to(o,{v:t[0],duration:1.6,ease:'power3.out',onUpdate:function(){el.textContent=o.v.toFixed(t[1])}});
+    });
+  }
+
+
+  /* case file */
+  var ctabs=[].slice.call(document.querySelectorAll('.ctab')),cdet=document.getElementById('casefile');
+  function isDark(){var t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches}
+  function drawMaps(scope){
+    if(!window.mermaid)return;
+    mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:isDark()?'dark':'neutral',fontFamily:'Geist, sans-serif',flowchart:{curve:'basis'}});
+    var nodes=[].slice.call(scope.querySelectorAll('.mm'));
+    nodes.forEach(function(n){n.removeAttribute('data-processed');n.textContent=n.getAttribute('data-src')});
+    if(nodes.length)mermaid.run({nodes:nodes}).catch(function(){});
+  }
+  function dbars(id,rows,max,fmt,marks){
+    var el=document.getElementById(id);el.innerHTML='';
+    rows.forEach(function(r,i){var d=document.createElement('div');d.className='bar';var m=marks?'<span class="m" style="left:'+(marks[i]/max*100)+'%"></span>':'';
+      d.innerHTML='<span>'+esc(r[0])+'</span><div class="b"><div class="f" data-w="'+Math.max(2,r[1]/max*100)+'"></div>'+m+'</div><b>'+fmt(r[1])+'</b>';el.appendChild(d)});
+    requestAnimationFrame(function(){requestAnimationFrame(function(){el.querySelectorAll('.f').forEach(function(n){n.style.width=n.getAttribute('data-w')+'%'})})});
+  }
+  function drawDash(){
+    if(!db)return;
+    var mg=db.exec(story[3])[0].values,
+        low=db.exec("SELECT p.name,i.on_hand,p.reorder_point FROM products p JOIN inventory i ON i.product_id=p.product_id ORDER BY i.on_hand*1.0/p.reorder_point")[0].values,
+        sh=db.exec("SELECT c.region, ROUND(AVG(julianday(o.shipped_date)-julianday(o.order_date)),1) d FROM orders o JOIN customers c ON c.customer_id=o.customer_id WHERE o.shipped_date IS NOT NULL GROUP BY c.region ORDER BY d DESC")[0].values,
+        top=db.exec(presets[4][1])[0].values[0],
+        short=db.exec(presets[3][1]);
+    var lowCount=low.filter(function(r){return r[1]<=r[2]}).length;
+    document.getElementById('kpis').innerHTML=[[lowCount,'products at or below reorder point'],[Math.min.apply(null,mg.map(function(r){return r[2]}))+'%','lowest category margin'],[sh[0][1]+' days','slowest region to ship'],[top[2]+'%','largest customer share'],[short.length?short[0].values.length:0,'open orders that exceed stock']]
+      .map(function(k){return '<div class="kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>'}).join('');
+    dbars('d-rev',mg.map(function(r){return [r[0],r[1]]}),900,function(v){return '$'+v.toFixed(0)});
+    dbars('d-margin',mg.map(function(r){return [r[0],r[2]]}).sort(function(a,b){return b[1]-a[1]}),70,function(v){return v.toFixed(1)+'%'});
+    dbars('d-stock',low.map(function(r){return [r[0],r[1]]}),520,function(v){return v},low.map(function(r){return r[2]}));
+    dbars('d-ship',sh.map(function(r){return [r[0],r[1]]}),6.5,function(v){return v.toFixed(1)+' d'});
+  }
+  function showC(id){
+    document.querySelectorAll('.cpanel').forEach(function(p){p.hidden=p.id!==id});
+    ctabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.c===id?'true':'false')});
+    var p=document.getElementById(id);drawMaps(p);if(id==='c4')drawDash();
+    if(window.ScrollTrigger)ScrollTrigger.refresh();
+  }
+  ctabs.forEach(function(t){t.addEventListener('click',function(){showC(t.dataset.c)})});
+  cdet.addEventListener('toggle',function(){if(cdet.open){var cur=ctabs.filter(function(t){return t.getAttribute('aria-selected')==='true'})[0];showC(cur.dataset.c)}if(window.ScrollTrigger)ScrollTrigger.refresh()});
+  document.getElementById('theme').addEventListener('click',function(){setTimeout(function(){if(cdet.open){var cur=ctabs.filter(function(t){return t.getAttribute('aria-selected')==='true'})[0];drawMaps(document.getElementById(cur.dataset.c))}},60)});
+
   function boot(){
-    if(typeof initSqlJs!=='function'){st.textContent='Could not load the SQL engine. Download the database below to run it locally.';return}
+    var hr=document.getElementById('hero-rows');
+    if(typeof initSqlJs!=='function'){st.textContent='The SQL engine could not load. Download the database below to run it locally.';hr.innerHTML='<tr><td colspan="4" style="color:var(--muted)">Could not load the live query.</td></tr>';steps.forEach(function(s){s.querySelector('.res').innerHTML='<div class="err">The live query could not load.</div>'});return}
     initSqlJs({locateFile:function(f){return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/'+f}}).then(function(SQL){
-      return fetch('inventory_sample.db').then(function(r){return r.arrayBuffer()}).then(function(buf){db=new SQL.Database(new Uint8Array(buf));st.textContent='Database ready. Ctrl+Enter also runs.';go.disabled=false;exec()});
-    }).catch(function(){st.textContent='Could not load the database in the browser. Use the download below.'});
+      return fetch('inventory_sample.db').then(function(r){return r.arrayBuffer()}).then(function(buf){
+        db=new SQL.Database(new Uint8Array(buf));go.disabled=false;st.textContent='Database ready. Ctrl+Enter also runs the query.';
+        exec();heroAndNumbers();
+        if(document.documentElement.classList.contains('motion')){cur=-1;setStep(Math.max(0,cur<0?0:cur))}
+        else{steps.forEach(function(s,i){fillStep(i)})}
+        if(window.ScrollTrigger)ScrollTrigger.refresh();
+      });
+    }).catch(function(){st.textContent='The database could not load. Use the download below.';hr.innerHTML='<tr><td colspan="4" style="color:var(--muted)">Could not load the live query.</td></tr>'});
+  }
+
+  /* motion */
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var rv=[].slice.call(document.querySelectorAll('.reveal'));
+  if('IntersectionObserver' in window&&!reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+    rv.forEach(function(n){io.observe(n)});
+  }else{rv.forEach(function(n){n.classList.add('in')})}
+
+  if(window.gsap&&window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+    var mm=gsap.matchMedia();
+    mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",function(){
+      root.classList.add('motion');
+      /* reading progress */
+      gsap.to('.progress',{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.2}});
+      /* hero leaves as you scroll: depth */
+      gsap.to('#herogrid',{yPercent:-10,opacity:.15,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+      /* timeline: time passing = sideways travel, pinned at top top */
+      var track=document.getElementById('track');
+      var dist=function(){return Math.max(0,track.scrollWidth-window.innerWidth)};
+      gsap.to(track,{x:function(){return -dist()},ease:'none',scrollTrigger:{trigger:'#journey',start:'top top',end:function(){return '+='+dist()},pin:true,scrub:1,invalidateOnRefresh:true}});
+      /* questions become queries: pinned, one step per quarter */
+      ScrollTrigger.create({trigger:'#story',start:'top top',end:'+=320%',pin:true,onUpdate:function(self){setStep(Math.min(steps.length-1,Math.floor(self.progress*steps.length)))}});
+      setStep(0);
+      /* portrait draws itself top to bottom when the timeline scene begins */
+      gsap.fromTo('.portrait',{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)',duration:2.2,ease:'power2.inOut',scrollTrigger:{trigger:'#journey',start:'top 70%',once:true}});
+      /* numbers count up once */
+      ScrollTrigger.create({trigger:'#numbers',start:'top 70%',once:true,onEnter:countUp});
+      /* stacking cards: earlier cards recede as the next arrives */
+      var cards=gsap.utils.toArray('#stack .card');
+      cards.forEach(function(c,i){
+        if(i===cards.length-1)return;
+        gsap.to(c,{scale:.94,opacity:.55,ease:'none',scrollTrigger:{trigger:cards[i+1],start:'top bottom',end:'top '+(120+i*24)+'px',scrub:true}});
+      });
+      /* card tilt follows the pointer: feedback that the data is live */
+      var live=document.getElementById('livecard'),hero=document.querySelector('.hero');
+      var onMove=function(e){var r=hero.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;live.style.setProperty('--ry',(x*8).toFixed(2)+'deg');live.style.setProperty('--rx',(-y*8).toFixed(2)+'deg')};
+      hero.addEventListener('pointermove',onMove);
+      return function(){root.classList.remove('motion');hero.removeEventListener('pointermove',onMove)};
+    });
+    mm.add("(max-width: 899px), (prefers-reduced-motion: reduce)",function(){
+      ScrollTrigger.create({trigger:'#numbers',start:'top 80%',once:true,onEnter:countUp});
+    });
   }
   window.addEventListener('load',boot);
-
-  /* run tests the first time the plan scrolls into view */
-  if('IntersectionObserver' in window){
-    var seen=false,io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!seen){seen=true;setTimeout(run,500)}})},{threshold:.35});
-    io.observe(document.getElementById('cases'));
-  }
 })();
 </script>
 </body>

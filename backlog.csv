@@ -1,0 +1,13 @@
+Issue key,Issue type,Summary,Priority (MoSCoW),Story points,Sprint,Status,Acceptance criteria
+US-01,Story,Enter an order,Must,3,Sprint 1,Done in sample database,"Given a customer and in-stock products, When I save an order with line items, Then the order and every line item are stored, and the same product cannot appear twice on one order."
+US-02,Story,Reject bad quantities,Must,1,Sprint 1,Done in sample database,"Given an order, When I add a line item with quantity 0 or less, Then the system rejects it."
+US-03,Story,Allow only valid statuses,Must,1,Sprint 1,Done in sample database,"Given an order, When I set a status other than Placed, Picked, Shipped, Delivered or Cancelled, Then the system rejects it."
+US-04,Story,Unique product codes,Must,1,Sprint 1,Done in sample database,"Given an existing product code, When I add another product with the same code, Then the system rejects it."
+US-05,Story,Valid references only,Must,2,Sprint 1,Done in sample database,"Given a line item for a product that does not exist, When I save it, Then the system rejects it."
+US-06,Story,Block over-picking,Must,3,Sprint 1,Done in sample database,"Given 35 units on hand, When I pick 500, Then the pick is rejected and stock stays at 35 and the shortfall is shown."
+US-12,Story,Ship dates on shipped orders,Must,2,Sprint 1,Done in sample database,"Given an order marked Shipped or Delivered, When I save it without a ship date, Then the system rejects it."
+US-07,Story,Stock falls on pick,Must,2,Sprint 2,Planned,"Given 60 units on hand, When I pick 12, Then on-hand becomes 48."
+US-08,Story,Daily reorder list,Must,3,Sprint 2,Planned,"Given stock levels, When I open the reorder list, Then it shows every product at or below its reorder point, with supplier and lead time, largest shortfall first."
+US-09,Story,List updates with stock,Should,2,Sprint 2,Planned,"Given a product above its reorder point, When a pick brings it to the reorder point, Then it appears on the next list."
+US-10,Story,Revenue and margin report,Must,5,Sprint 3,Planned,"Given orders in any status, When I run the report, Then cancelled orders are excluded and margin percent equals (price minus cost) divided by price, to one decimal."
+US-11,Story,Shipping time by region,Should,3,Sprint 3,Planned,"Given orders with ship dates, When I run the report, Then only shipped or delivered orders are counted, with order count and average days per region."
